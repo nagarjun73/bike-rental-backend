@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const url = process.env.DB_URL
 const name = process.env.DB_NAME
 
-const connectDB = async () => {
+const configureDB = async () => {
   try {
     await mongoose.connect(`${url}/${name}`)
     console.log("Connected to database")
@@ -12,4 +12,4 @@ const connectDB = async () => {
   }
 }
 
-module.exports = connectDB
+module.exports = configureDB
