@@ -24,7 +24,7 @@ const profileSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Trip"
   }]
-})
+}, { timestamps: true })
 
 const Profile = model("Profile", profileSchema)
 
