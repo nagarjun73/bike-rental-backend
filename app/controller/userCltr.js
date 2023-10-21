@@ -116,7 +116,13 @@ userCltr.login = async (req, res) => {
     if (!user) {
       res.status(400).json({ errors: "Invalid login credentials. Please check your username and password." })
     } else {
-
+      const verified = await bcryptjs.compare(body.password, user.password)
+      if (!verified) {
+        res.json({ errors: "Invalid password." })
+      } else {
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' })
+        res.json({ token: token })
+      }
     }
   } catch (e) {
     res.json(e)
