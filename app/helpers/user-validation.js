@@ -10,16 +10,16 @@ const emailSchema = {
   isEmail: {
     errorMessage: "Email is Invalid"
   },
-  custom: {
-    options: async (value) => {
-      const user = await User.findOne({ email: value })
-      if (user) {
-        throw new Error('Email is already in use.')
-      } else {
-        return true
-      }
-    }
-  }
+  // custom: {
+  //   options: async (value) => {
+  //     const user = await User.findOne({ email: value })
+  //     if (user) {
+  //       throw new Error('Email is already in use.')
+  //     } else {
+  //       return true
+  //     }
+  //   }
+  // }
 }
 
 const mobileNumberSchema = {
@@ -30,16 +30,16 @@ const mobileNumberSchema = {
     options: { min: 10, max: 10 },
     errorMessage: 'Mobile number should be 10 characters'
   },
-  custom: {
-    options: async (value) => {
-      const user = await User.findOne({ mobileNumber: value })
-      if (user) {
-        throw new Error('Mobile number is already in use')
-      } else {
-        return true
-      }
-    }
-  }
+  // custom: {
+  //   options: async (value) => {
+  //     const user = await User.findOne({ mobileNumber: value })
+  //     if (user) {
+  //       throw new Error('Mobile number is already in use')
+  //     } else {
+  //       return true
+  //     }
+  //   }
+  // }
 }
 
 const passwordSchema = {

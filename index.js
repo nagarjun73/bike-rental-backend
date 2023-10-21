@@ -17,8 +17,9 @@ app.use(cors())
 //configure database
 configureDB()
 
-app.post('/auth/register', checkSchema(userSignupValidationSchema), userCltr.register)
+app.post('/api/register', checkSchema(userSignupValidationSchema), userCltr.register)
 app.get('/api/verify/:token', userCltr.verify)
+app.post('/api/login', userCltr.login)
 
 app.listen(port, () => {
   console.log("server running on port", port)
