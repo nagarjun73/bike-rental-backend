@@ -7,8 +7,18 @@ const authenticateUser = async (req, res, next) => {
     req.user = user
     next()
   } catch (e) {
-    res.json(e)
+    res.status(401).json({ errors: "Authentication Error. Please Login again." })
   }
 }
 
-module.exports = authenticateUser
+const authorizeUser = (role) => {
+  return function (req, res, next) {
+    if (!role.includes(req.user.role)) {
+      res.status(401).json({ errors: "You are not Authorized." })
+    } else {
+      next()
+    }
+  }
+}
+
+module.exports = { authenticateUser, authorizeUser }

@@ -4,9 +4,10 @@ const _ = require('lodash')
 const { validationResult } = require('express-validator')
 const bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-//import files
-const User = require('../model/userModel')
 const transporter = require('../../config/nodemailerConfig')
+//import Models
+const User = require('../model/userModel')
+const Profile = require('../model/profileModel')
 
 const userCltr = {}
 
@@ -93,6 +94,8 @@ userCltr.register = async (req, res) => {
   }
 }
 
+
+
 // This function handles Email Verification
 userCltr.verify = async (req, res) => {
   const token = req.params.token
@@ -105,7 +108,13 @@ userCltr.verify = async (req, res) => {
       user.verified = !user.verified
       const verified = await user.save()
       if (verified) {
-        res.json({ msg: "Your account has been successfully verified" })
+        //creating User Profile
+        const prof = new Profile()
+        prof.userId = user._id
+        const profileCreated = await prof.save()
+        if (profileCreated) {
+          res.json({ msg: "Your account has been successfully verified" })
+        }
       }
     } else {
       res.json({ msg: "Your account has already been verified." })
@@ -148,6 +157,9 @@ userCltr.login = async (req, res) => {
 
 userCltr.profile = async (req, res) => {
   try {
+    const user = req.user
+    const profile = await Profile.findOne({ userId: user.id }).populate(['userId'])
+    res.json(profile)
   } catch (e) {
     res.json(e)
   }
