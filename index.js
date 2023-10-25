@@ -4,7 +4,8 @@ const cors = require('cors')
 const configureDB = require('./config/mongodb')
 const userCltr = require('./app/controller/userCltr')
 const { checkSchema } = require('express-validator')
-const userSignupValidationSchema = require('./app/helpers/user-validation')
+const { userSignupValidationSchema, userLoginValidationSchema } = require('./app/helpers/user-validation')
+const authenticateUser = require('./app/middleware/authentication')
 const port = process.env.PORT
 
 const app = express()
@@ -17,9 +18,10 @@ app.use(cors())
 //configure database
 configureDB()
 
-app.post('/api/register', checkSchema(userSignupValidationSchema), userCltr.register)
-app.get('/api/verify/:token', userCltr.verify)
-app.post('/api/login', userCltr.login)
+app.post('/api/user/register', checkSchema(userSignupValidationSchema), userCltr.register)
+app.get('/api/user/verify/:token', userCltr.verify)
+app.post('/api/user/login', checkSchema(userLoginValidationSchema), userCltr.login)
+app.get('/api/user/profile', authenticateUser, userCltr.profile)
 
 app.listen(port, () => {
   console.log("server running on port", port)

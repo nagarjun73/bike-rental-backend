@@ -6,6 +6,12 @@ const nameSchema = {
   }
 }
 
+const emailOrMobileSchema = {
+  notEmpty: {
+    errorMessage: "Field should not be Empty"
+  }
+}
+
 const emailSchema = {
   isEmail: {
     errorMessage: "Email is Invalid"
@@ -56,4 +62,9 @@ const userSignupValidationSchema = {
   password: passwordSchema
 }
 
-module.exports = userSignupValidationSchema
+const userLoginValidationSchema = {
+  emailOrMobile: emailOrMobileSchema,
+  password: passwordSchema
+}
+
+module.exports = { userSignupValidationSchema, userLoginValidationSchema }

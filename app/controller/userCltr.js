@@ -32,7 +32,7 @@ userCltr.register = async (req, res) => {
 
         //generating token for verification
         const token = jwt.sign({ id: foundUser._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN })
-        const url = `http://localhost:${process.env.PORT}/api/verify/${token}`
+        const url = `http://localhost:${process.env.PORT}/api/user/verify/${token}`
 
         //sending verification link using nodemailer 
         const sentMail = await transporter.sendMail({
@@ -60,13 +60,19 @@ userCltr.register = async (req, res) => {
       //generating hashed password
       const hashedPassword = await bcryptjs.hash(body.password, salt)
       usr.password = hashedPassword
+
+      //making first user Admin
+      const totalUsers = await User.countDocuments()
+      if (!totalUsers) {
+        usr.role = 'admin'
+      }
       const result = await usr.save()
       console.log(result)
       if (result) {
 
         //generating token for verification
         const token = jwt.sign({ id: result._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN })
-        const url = `http://localhost:${process.env.PORT}/api/verify/${token}`
+        const url = `http://localhost:${process.env.PORT}/api/user/verify/${token}`
 
         //sending verification link using nodemailer 
         const sentMail = await transporter.sendMail({
@@ -110,20 +116,38 @@ userCltr.verify = async (req, res) => {
 }
 
 userCltr.login = async (req, res) => {
-  const body = _.pick(req.body, ['emailOrMobile', 'password'])
+  const errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    res.status(400).json({ errors: errors.array() })
+  }
   try {
+    // Sanitize input data
+    const body = _.pick(req.body, ['emailOrMobile', 'password'])
+    //Checking if user present on database
     const user = await User.findOne({ $or: [{ email: body.emailOrMobile }, { mobileNumber: body.emailOrMobile }] })
     if (!user) {
       res.status(400).json({ errors: "Invalid login credentials. Please check your username and password." })
     } else {
+
+      //comparing input password with found user using bcryptjs
       const verified = await bcryptjs.compare(body.password, user.password)
       if (!verified) {
         res.json({ errors: "Invalid password." })
       } else {
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' })
+
+        //generating token after password verified
+        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' })
         res.json({ token: token })
       }
     }
+  } catch (e) {
+    res.json(e)
+  }
+}
+
+userCltr.profile = async (req, res) => {
+  try {
   } catch (e) {
     res.json(e)
   }
