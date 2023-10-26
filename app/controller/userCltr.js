@@ -4,7 +4,7 @@ const _ = require('lodash')
 const { validationResult } = require('express-validator')
 const bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const transporter = require('../../config/nodemailerConfig')
+const transporter = require('../config/nodemailerConfig')
 //import Models
 const User = require('../model/userModel')
 const Profile = require('../model/profileModel')
