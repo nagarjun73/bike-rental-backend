@@ -72,4 +72,23 @@ vehicleCltr.changeStatus = async (req, res) => {
   }
 }
 
+vehicleCltr.list = async (req, res) => {
+  try {
+    const listVehicles = await Vehicle.find()
+    res.json(listVehicles)
+  } catch (e) {
+    res.json(e)
+  }
+}
+
+vehicleCltr.info = async (req, res) => {
+  try {
+    const id = req.params.id
+    const vehicle = await Vehicle.findById(id)
+    res.json(vehicle)
+  } catch (e) {
+    res.json(e)
+  }
+}
+
 module.exports = vehicleCltr

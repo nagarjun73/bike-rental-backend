@@ -38,7 +38,8 @@ userCltr.register = async (req, res) => {
         //sending verification link using nodemailer 
         const sentMail = await transporter.sendMail({
           from: process.env.EMAIL,
-          to: foundUser.email,
+          // to: foundUser.email,
+          to: 'invisiblecircuit@gmail.com',
           subject: "Verify your Bike Rental Account",
           html: `<div><p>Hey Thank you for Joining Bike Rentals. Please verify your account from below Link</p><a href=${url}>Verify</a></div>`
         })
@@ -78,7 +79,8 @@ userCltr.register = async (req, res) => {
         //sending verification link using nodemailer 
         const sentMail = await transporter.sendMail({
           from: process.env.EMAIL,
-          to: result.email,
+          // to: result.email,
+          to: 'invisiblecircuit@gmail.com',
           subject: "Verify your Bike Rental Account",
           html: `<div><p>Hey Thank you for Joining Bike Rentals. Please verify your account from below Link</p><a href=${url}>Verify</a></div>`
         })
@@ -164,5 +166,26 @@ userCltr.profile = async (req, res) => {
     res.json(e)
   }
 }
+
+userCltr.list = async (req, res) => {
+  try {
+    const users = await User.find()
+    res.json(users)
+  } catch (e) {
+    res.json(e)
+  }
+}
+
+userCltr.search = async (req, res) => {
+  try {
+    const id = req.params.id
+    const foundUser = await User.findById(id)
+    res.json(foundUser)
+  } catch (e) {
+    res.json(e)
+  }
+}
+
+
 
 module.exports = userCltr

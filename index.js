@@ -33,6 +33,15 @@ app.get('/api/host/all-vehicles', authenticateUser, authorizeUser(['host']), veh
 app.post('/api/host/add-vehicle', authenticateUser, authorizeUser(['host']), multerMiddleware(), checkSchema(addVehicleValidationSchema), vehicleCltr.addVehicle)
 app.put('/api/host/:id/change-status', authenticateUser, authorizeUser(['host']), vehicleCltr.changeStatus)
 
+
+//Admin's API's
+app.get('/api/admin/users', authenticateUser, authorizeUser(['admin']), userCltr.list)
+app.get('/api/admin/:id/search-users', authenticateUser, authorizeUser(['admin']), userCltr.search)
+
+app.get('/api/admin/vehicles', authenticateUser, authorizeUser(['admin']), vehicleCltr.list)
+
+app.get('/api/admin/:id/vehicle-info', authenticateUser, authorizeUser(['admin']), vehicleCltr.info)
+
 app.listen(port, () => {
   console.log("server running on port", port)
 })
