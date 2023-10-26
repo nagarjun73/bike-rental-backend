@@ -1,10 +1,17 @@
 const _ = require('lodash')
 const Vehicle = require('../model/vehicleModel')
-const s3 = require('../config/awsS3Config')
+const s3 = require('../aws/awsS3Config')
+const { validationResult } = require('express-validator')
+
+
+
 const vehicleCltr = {}
 
 vehicleCltr.addVehicle = async (req, res) => {
   try {
+    const errors = validationResult(req)
+    console.log(errors)
+
     const body = _.pick(req.body, ['type', 'model', 'engineCapacity', 'distanceTravelled', 'registrationNumber', ''])//Sanitize
     const { vehicleImage, registrationCertificate, insuranceCerificate, emissionCertificate } = req.files
 
@@ -24,11 +31,9 @@ vehicleCltr.addVehicle = async (req, res) => {
     //map over array and call upload function
     const arr2 = await Promise.all(arrayFiles.map((file) => uploadFileToS3(file)))
 
-    console.log(arr2)
-
     //finds specific file based on string
     function getUrlObj(str) {
-      return arr2.filter((ele) => ele.Location.includes(str)).map(ele => ({ url: ele.Location, key: ele.key }))
+      return arr2.filter((ele) => ele.Location.includes(str)).map(ele => ({ url: ele.Location, key: ele.Key }))
     }
 
     const v1 = new Vehicle(body)
