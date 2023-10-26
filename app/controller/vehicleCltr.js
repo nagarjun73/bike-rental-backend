@@ -59,4 +59,17 @@ vehicleCltr.getVehicles = async (req, res) => {
   }
 }
 
+vehicleCltr.changeStatus = async (req, res) => {
+  try {
+    const vehicleId = req.params.id
+    const body = _.pick(req.body, ['availability'])
+    const foundVehicle = await Vehicle.findOne({ hostId: req.user.id, _id: vehicleId })
+    foundVehicle.availability = body.availability
+    await foundVehicle.save()
+    res.json(foundVehicle)
+  } catch (e) {
+    res.json(e)
+  }
+}
+
 module.exports = vehicleCltr

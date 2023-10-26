@@ -29,8 +29,9 @@ app.post('/api/users/login', checkSchema(userLoginValidationSchema), userCltr.lo
 app.get('/api/users/profile', authenticateUser, authorizeUser(['admin', 'user', 'host']), userCltr.profile)
 
 //Host's API's
-app.post('/api/host/add-vehicle', authenticateUser, authorizeUser(['host']), multerMiddleware(), checkSchema(addVehicleValidationSchema), vehicleCltr.addVehicle)
 app.get('/api/host/all-vehicles', authenticateUser, authorizeUser(['host']), vehicleCltr.getVehicles)
+app.post('/api/host/add-vehicle', authenticateUser, authorizeUser(['host']), multerMiddleware(), checkSchema(addVehicleValidationSchema), vehicleCltr.addVehicle)
+app.put('/api/host/:id/change-status', authenticateUser, authorizeUser(['host']), vehicleCltr.changeStatus)
 
 app.listen(port, () => {
   console.log("server running on port", port)
