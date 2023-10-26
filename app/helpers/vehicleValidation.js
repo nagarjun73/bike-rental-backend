@@ -1,4 +1,5 @@
 
+
 const typeSchema = {
   notEmpty: {
     errorMessage: "Type should not be Empty"
@@ -47,13 +48,7 @@ const vehicleImageSchema = {
       } else if (req.files.vehicleImage.length > 5) {
         throw new Error('You can upload a maximum of three files.')
       } else {
-        req.files.vehicleImage.forEach((ele) => {
-          if (ele.mimetype.includes('jpeg') || ele.mimetype.includes('pdf' || ele.mimetype.includes('jpg'))) {
-            return true
-          } else {
-            throw new Error(' Invalid File Format. Please upload a file in either PDF or JPEG format')
-          }
-        })
+        return true
       }
     }
   }
@@ -67,13 +62,7 @@ const registrationCertificateSchema = {
       } else if (req.files.registrationCertificate.length > 2) {
         throw new Error('You can upload a maximum of three files.')
       } else {
-        req.files.registrationCertificate.forEach((ele) => {
-          if (ele.mimetype.includes('jpeg') || ele.mimetype.includes('pdf' || ele.mimetype.includes('jpg'))) {
-            return true
-          } else {
-            throw new Error(' Invalid File Format. Please upload a file in either PDF or JPEG format')
-          }
-        })
+        return true
       }
     }
   }
@@ -87,13 +76,7 @@ const insuranceCerificateSchema = {
       } else if (req.files.insuranceCerificate.length > 2) {
         throw new Error('You can upload a maximum of three files.')
       } else {
-        req.files.insuranceCerificate.forEach((ele) => {
-          if (ele.mimetype.includes('jpeg') || ele.mimetype.includes('pdf' || ele.mimetype.includes('jpg'))) {
-            return true
-          } else {
-            throw new Error(' Invalid File Format. Please upload a file in either PDF or JPEG format')
-          }
-        })
+        return true
       }
     }
   }
@@ -107,13 +90,7 @@ const emissionCertificateSchema = {
       } else if (req.files.emissionCertificate.length > 2) {
         throw new Error('You can upload a maximum of three files.')
       } else {
-        req.files.emissionCertificate.forEach((ele) => {
-          if (ele.mimetype.includes('jpeg') || ele.mimetype.includes('pdf' || ele.mimetype.includes('jpg'))) {
-            return true
-          } else {
-            throw new Error(' Invalid File Format. Please upload a file in either PDF or JPEG format')
-          }
-        })
+        return true
       }
     }
   }

@@ -23,15 +23,14 @@ app.use(cors())
 configureDB()
 
 //User's API's
-app.post('/api/user/register', checkSchema(userSignupValidationSchema), userCltr.register)
-app.get('/api/user/verify/:token', userCltr.verify)
-app.post('/api/user/login', checkSchema(userLoginValidationSchema), userCltr.login)
-app.get('/api/user/profile', authenticateUser, authorizeUser(['admin', 'user', 'host']), userCltr.profile)
+app.post('/api/users/register', checkSchema(userSignupValidationSchema), userCltr.register)
+app.get('/api/users/verify/:token', userCltr.verify)
+app.post('/api/users/login', checkSchema(userLoginValidationSchema), userCltr.login)
+app.get('/api/users/profile', authenticateUser, authorizeUser(['admin', 'user', 'host']), userCltr.profile)
 
 //Host's API's
-app.post('/api/vehicle/add', authenticateUser, authorizeUser(['admin', 'host']), multerMiddleware(), checkSchema(addVehicleValidationSchema), vehicleCltr.addVehicle)
-
-app.post('/api/vehicle/add', multerMiddleware(),)
+app.post('/api/host/add-vehicle', authenticateUser, authorizeUser(['host']), multerMiddleware(), checkSchema(addVehicleValidationSchema), vehicleCltr.addVehicle)
+app.get('/api/host/all-vehicles', authenticateUser, authorizeUser(['host']), vehicleCltr.getVehicles)
 
 app.listen(port, () => {
   console.log("server running on port", port)

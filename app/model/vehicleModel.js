@@ -2,6 +2,10 @@ const { Schema, model } = require('mongoose')
 
 
 const vehicleSchema = new Schema({
+  hostId: {
+    type: Schema.Types.ObjectId,
+    ref: "User"
+  },
   type: String,
   model: String,
   make: String,
