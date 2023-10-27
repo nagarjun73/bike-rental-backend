@@ -23,24 +23,34 @@ app.use(cors())
 configureDB()
 
 //User's API's
+//User Registration
 app.post('/api/users/register', checkSchema(userSignupValidationSchema), userCltr.register)
+//User Verify
 app.get('/api/users/verify/:token', userCltr.verify)
+//User Login
 app.post('/api/users/login', checkSchema(userLoginValidationSchema), userCltr.login)
+//User Profile
 app.get('/api/users/profile', authenticateUser, authorizeUser(['admin', 'user', 'host']), userCltr.profile)
 
 //Host's API's
+//List Vehicle
 app.get('/api/host/all-vehicles', authenticateUser, authorizeUser(['host']), vehicleCltr.getVehicles)
+//Add vehicle
 app.post('/api/host/add-vehicle', authenticateUser, authorizeUser(['host']), multerMiddleware(), checkSchema(addVehicleValidationSchema), vehicleCltr.addVehicle)
+//Change status of vehicle
 app.put('/api/host/:id/change-status', authenticateUser, authorizeUser(['host']), vehicleCltr.changeStatus)
 
 
 //Admin's API's
+//Get all Users
 app.get('/api/admin/users', authenticateUser, authorizeUser(['admin']), userCltr.list)
+//Search users
 app.get('/api/admin/:id/search-users', authenticateUser, authorizeUser(['admin']), userCltr.search)
-
+//List all vehicles
 app.get('/api/admin/vehicles', authenticateUser, authorizeUser(['admin']), vehicleCltr.list)
-
+//Get Vehicle info
 app.get('/api/admin/:id/vehicle-info', authenticateUser, authorizeUser(['admin']), vehicleCltr.info)
+//Approve Host's vehicle
 app.get('/api/admin/:id/approve', authenticateUser, authorizeUser(['admin']), vehicleCltr.approve)
 
 app.listen(port, () => {
