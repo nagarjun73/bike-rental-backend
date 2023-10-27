@@ -91,4 +91,16 @@ vehicleCltr.info = async (req, res) => {
   }
 }
 
+vehicleCltr.approve = async (req, res) => {
+  try {
+    const id = req.params.id
+    const vehicle = await Vehicle.findById(id)
+    vehicle.vehicleApproveStatus = true
+    await vehicle.save()
+    res.json(vehicle)
+  } catch (e) {
+    res.json(e)
+  }
+}
+
 module.exports = vehicleCltr

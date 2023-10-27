@@ -43,8 +43,8 @@ const vehicleSchema = new Schema({
     default: 'no ratings'
   },
   vehicleApproveStatus: {
-    type: String,
-    default: 'pending'
+    type: Boolean,
+    default: false
   },
 })
 

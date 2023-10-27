@@ -41,6 +41,7 @@ app.get('/api/admin/:id/search-users', authenticateUser, authorizeUser(['admin']
 app.get('/api/admin/vehicles', authenticateUser, authorizeUser(['admin']), vehicleCltr.list)
 
 app.get('/api/admin/:id/vehicle-info', authenticateUser, authorizeUser(['admin']), vehicleCltr.info)
+app.get('/api/admin/:id/approve', authenticateUser, authorizeUser(['admin']), vehicleCltr.approve)
 
 app.listen(port, () => {
   console.log("server running on port", port)
