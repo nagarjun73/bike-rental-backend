@@ -5,7 +5,7 @@ const chargeSchema = new Schema({
   minCc: Number,
   maxCc: Number,
   perDayKmLimit: Number,
-  pricePerDay: Number
+  perDayCharge: Number
 })
 
 const Charge = model("Charge", chargeSchema)

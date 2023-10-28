@@ -2,7 +2,12 @@ const User = require('../model/userModel')
 
 const nameSchema = {
   notEmpty: {
-    errorMessage: "Name should not be empty"
+    errorMessage: "Name should not be empty",
+    bail: true
+  },
+  isLength: {
+    options: { max: 50 },
+    errorMessage: "The name must be limited to a maximum of 50 characters."
   }
 }
 

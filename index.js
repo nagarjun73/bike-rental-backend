@@ -66,6 +66,9 @@ app.get('/api/admin/:id/vehicle-info', authenticateUser, authorizeUser(['admin']
 //Approve Host's vehicle
 app.get('/api/admin/:id/approve', authenticateUser, authorizeUser(['admin']), vehicleCltr.approve)
 
+//charges apis
+app.post('/api/admin/:id/add-charge', authenticateUser, authorizeUser(['admin']))
+
 app.listen(port, () => {
   console.log("server running on port", port)
 })
