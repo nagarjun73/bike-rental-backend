@@ -22,11 +22,12 @@ const hostIdSchema = {
 
 const tripStartDateSchema = {
   notEmpty: {
-    errorMessage: "Field should not be Empty"
+    errorMessage: "Field should not be Empty",
+    bail: true
   },
   isISO8601: {
     errorMessage: "Invalid Date and Time.",
-    options: { strict: true, strictSeparator: true }
+    bail: true
   },
   custom: {
     options: (value) => {
@@ -42,11 +43,12 @@ const tripStartDateSchema = {
 
 const tripEndDateSchema = {
   notEmpty: {
-    errorMessage: "Field should not be Empty"
+    errorMessage: "Field should not be Empty",
+    bail: true
   },
   isISO8601: {
     errorMessage: "Invalid Date and Time.",
-    options: { strict: true, strictSeparator: true }
+    bail: true
   },
   custom: {
     options: (value, { req, res }) => {
@@ -64,9 +66,10 @@ const tripEndDateSchema = {
 const perDayChargeSchema = {
   notEmpty: {
     errorMessage: "Field should not be Empty",
-    isNumeric: {
-      errorMessage: "Field should be in number"
-    }
+    bail: true
+  },
+  isNumeric: {
+    errorMessage: "Field should be in number"
   }
 }
 

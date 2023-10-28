@@ -17,6 +17,7 @@ const { addVehicleValidationSchema } = require('./app/helpers/vehicleValidation'
 const { tripValidationSchema } = require('./app/helpers/trip-validaton')
 //Auth
 const { authenticateUser, authorizeUser } = require('./app/middleware/authentication')
+const chargeCltr = require('./app/controller/chargeCltr')
 const port = process.env.PORT
 
 const app = express()
@@ -39,8 +40,7 @@ app.post('/api/users/login', checkSchema(userLoginValidationSchema), userCltr.lo
 //User Profile
 app.get('/api/users/profile', authenticateUser, authorizeUser(['admin', 'user', 'host']), userCltr.profile)
 //Book Trip
-// app.post('/api/trips/book', authenticateUser, authorizeUser(['admin', 'user']), checkSchema(tripValidationSchema), tripCltr.book)
-app.post('/api/trips/book', checkSchema(tripValidationSchema))
+app.post('/api/trips/book', authenticateUser, authorizeUser(['admin', 'user']), checkSchema(tripValidationSchema), tripCltr.book)
 
 //Make Payment
 app.post('/api/payment', paymentCltr.pay)
@@ -67,7 +67,7 @@ app.get('/api/admin/:id/vehicle-info', authenticateUser, authorizeUser(['admin']
 app.get('/api/admin/:id/approve', authenticateUser, authorizeUser(['admin']), vehicleCltr.approve)
 
 //charges apis
-app.post('/api/admin/:id/add-charge', authenticateUser, authorizeUser(['admin']))
+app.post('/api/admin/:id/add-charge', authenticateUser, authorizeUser(['admin']), chargeCltr.add)
 
 app.listen(port, () => {
   console.log("server running on port", port)

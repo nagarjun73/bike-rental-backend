@@ -1,10 +1,15 @@
 const _ = require('lodash')
 const { differenceInDays } = require('date-fns')
 const Trip = require('../model/tripModel')
+const { validationResult } = require('express-validator')
 
 const tripCltr = {}
 
 tripCltr.book = async (req, res) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    res.status(400).json({ errors: errors.array() })
+  }
   try {
     //Sanitize
     const body = _.pick(req.body, ["vehicleId", "hostId", "tripStartDate", "tripEndDate", "perDayCharge"])

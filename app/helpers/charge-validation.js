@@ -31,6 +31,10 @@ const maxCcSchema = {
 const perDayKmLimitSchema = {
   notEmpty: {
     errorMessage: "Field should not be Empty"
+  },
+  isInt: {
+    errorMessage: "The input must be within the range of 100 km to 300 km",
+    options: { gt: 100, lt: 300 }
   }
 }
 
