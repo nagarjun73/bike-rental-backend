@@ -14,6 +14,7 @@ const paymentCltr = require('./app/controller/paymentCltr')
 //Validations
 const { userSignupValidationSchema, userLoginValidationSchema } = require('./app/helpers/user-validation')
 const { addVehicleValidationSchema } = require('./app/helpers/vehicleValidation')
+const { tripValidationSchema } = require('./app/helpers/trip-validaton')
 //Auth
 const { authenticateUser, authorizeUser } = require('./app/middleware/authentication')
 const port = process.env.PORT
@@ -38,7 +39,9 @@ app.post('/api/users/login', checkSchema(userLoginValidationSchema), userCltr.lo
 //User Profile
 app.get('/api/users/profile', authenticateUser, authorizeUser(['admin', 'user', 'host']), userCltr.profile)
 //Book Trip
-app.post('/api/trips/book', authenticateUser, authorizeUser(['admin', 'user']), tripCltr.book)
+// app.post('/api/trips/book', authenticateUser, authorizeUser(['admin', 'user']), checkSchema(tripValidationSchema), tripCltr.book)
+app.post('/api/trips/book', checkSchema(tripValidationSchema))
+
 //Make Payment
 app.post('/api/payment', paymentCltr.pay)
 

@@ -18,7 +18,7 @@ const vehicleSchema = new Schema({
     url: String,
     key: String
   }],
-  tripHistory: [{
+  trips: [{
     type: Schema.Types.ObjectId,
     ref: "Trip"
   }],
@@ -42,6 +42,7 @@ const vehicleSchema = new Schema({
     type: String,
     default: 'no ratings'
   },
+  perDayCharge: String,
   vehicleApproveStatus: {
     type: Boolean,
     default: false

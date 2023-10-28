@@ -15,8 +15,8 @@ const tripSchema = new Schema({
   },
   tripStatus: {
     type: String,
-    enum: ["Booked", "In progress", "Completed"],
-    default: "Booked"
+    enum: ["booked", "inprogress", "completed"],
+    default: "booked"
   },
   tripStartDate: Date,
   tripEndDate: Date,
@@ -27,8 +27,6 @@ const tripSchema = new Schema({
     type: Number,
     default: 0
   },
-  // odoReadingStart: Number,
-  // odoReadingEnd: Number,
   paymentId: {
     type: Schema.Types.ObjectId,
     ref: "Payment",
