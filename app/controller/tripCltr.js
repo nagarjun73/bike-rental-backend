@@ -23,15 +23,15 @@ tripCltr.book = async (req, res) => {
 
     console.log(days, hours)
     //Find charges 
-    const findVehicle = await Vehicle.findById(body.vehicleId)
-    console.log(findVehicle)
+    const vehicle = await Vehicle.findById(body.vehicleId).populate(['vehicleType'])
+    console.log(vehicle)
 
-    // const trip = new Trip(body)
-    // trip.userId = userId
-    // trip.amount = (body.perDayCharge * days) + (body.perHourCharge * hours)
-    // await trip.save()
-    // await Profile.findOneAndUpdate({ userId: userId }, { $push: { tripHistory: trip } })
-    // res.json(trip)
+    const trip = new Trip(body)
+    trip.userId = userId
+    trip.amount = (vehicle.vehicleType.perDayCharge * days) + (vehicle.vehicleType.perHourCharge * hours)
+    await trip.save()
+    await Profile.findOneAndUpdate({ userId: userId }, { $push: { tripHistory: trip } })
+    res.json(trip)
   } catch (e) {
     res.status(400).json(e)
   }

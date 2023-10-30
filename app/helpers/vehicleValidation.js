@@ -12,7 +12,7 @@ const modelSchema = {
   }
 }
 
-const engineCapacitySchema = {
+const vehicleTypeSchema = {
   notEmpty: {
     errorMessage: "Engine capacity is required"
   }
@@ -100,7 +100,7 @@ const addVehicleValidationSchema = {
   type: typeSchema,
   model: modelSchema,
   manufacturer: manufacturerSchema,
-  engineCapacity: engineCapacitySchema,
+  vehicleType: vehicleTypeSchema,
   distanceTravelled: distanceTravelledSchema,
   registrationNumber: registrationNumberSchema,
   vehicleImage: vehicleImageSchema,
