@@ -6,14 +6,17 @@ const { validationResult } = require('express-validator')
 const tripCltr = {}
 
 tripCltr.book = async (req, res) => {
+  //checking errors
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
     res.status(400).json({ errors: errors.array() })
   }
   try {
-    //Sanitize
+    //Sanitize input data
     const body = _.pick(req.body, ["vehicleId", "hostId", "tripStartDate", "tripEndDate", "perDayCharge"])
     const userId = req.user.id
+
+    //Calculting trip days using date-fns
     const tripDays = differenceInDays(new Date(body.tripEndDate), new Date(body.tripStartDate)) + 1
 
     const trip = new Trip(body)

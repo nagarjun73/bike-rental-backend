@@ -3,7 +3,7 @@ const _ = require('lodash')
 const chargeCltr = {}
 
 chargeCltr.add = async (req, res) => {
-  const body = _.pick(req.body, ['name', "minCc", "maxCc", "perDayKmLimit", "perDayCharge"])
+  const body = _.pick(req.body, ['name', "minCc", "maxCc", "perDayKmLimit", "perDayCharge", "perHourCharge"])
   try {
     console.log(body)
 

@@ -44,12 +44,19 @@ const perDayChargeSchema = {
   }
 }
 
+const perHourChargeSchema = {
+  notEmpty: {
+    errorMessage: "Field should not be empty"
+  }
+}
+
 const addChargeValidationSchema = {
   name: nameSchema,
   minCc: minCcSchema,
   maxCc: maxCcSchema,
   perDayKmLimit: perDayKmLimitSchema,
-  perDayCharge: perDayChargeSchema
+  perDayCharge: perDayChargeSchema,
+  perHourCharger: perHourChargeSchema
 }
 
 module.exports = { addChargeValidationSchema }

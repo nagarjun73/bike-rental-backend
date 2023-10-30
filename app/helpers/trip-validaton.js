@@ -30,6 +30,7 @@ const tripStartDateSchema = {
     bail: true
   },
   custom: {
+    //Check if trip start date is more then current time
     options: (value) => {
       const currentDay = new Date().toISOString()
       if (value < currentDay) {
@@ -46,11 +47,13 @@ const tripEndDateSchema = {
     errorMessage: "Field should not be Empty",
     bail: true
   },
+  //check if input date time valid ISO8601 fromate
   isISO8601: {
     errorMessage: "Invalid Date and Time.",
     bail: true
   },
   custom: {
+    //check if trip end date is more then trip start date
     options: (value, { req, res }) => {
       const startDate = req.body.tripStartDate
       const endDate = req.body.tripEndDate
