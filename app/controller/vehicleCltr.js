@@ -1,5 +1,6 @@
 const _ = require('lodash')
 const Vehicle = require('../model/vehicleModel')
+const Charge = require('../model/vehicletypeModel')
 const s3 = require('../aws/awsS3Config')
 const { validationResult } = require('express-validator')
 
@@ -12,9 +13,8 @@ vehicleCltr.addVehicle = async (req, res) => {
       res.status(400).json({ errors: errors.array() })
     } else {
 
-      const body = _.pick(req.body, ['type', 'model', 'engineCapacity', 'distanceTravelled', 'registrationNumber',])//Sanitize
+      const body = _.pick(req.body, ['type', 'model', 'vehicleType', 'distanceTravelled', 'registrationNumber',])//Sanitize
       const { vehicleImage, registrationCertificate, insuranceCerificate, emissionCertificate } = req.files
-
       //Fuction handles upload file to s3
       async function uploadFileToS3(file) {
         const params = {
@@ -36,12 +36,14 @@ vehicleCltr.addVehicle = async (req, res) => {
         return arr2.filter((ele) => ele.Location.includes(str)).map(ele => ({ url: ele.Location, key: ele.Key }))
       }
 
+      //New vehicle
       const v1 = new Vehicle(body)
       v1.hostId = req.user.id
       v1.vehicleImage = getUrlObj('vehicleImage')
       v1.registartionCertificate = getUrlObj('registrationCertificate')
       v1.insuranceCerificate = getUrlObj('insuranceCerificate')
       v1.emissionCertificate = getUrlObj('emissionCertificate')
+
       await v1.save()
       res.json(v1)
     }

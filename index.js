@@ -11,13 +11,14 @@ const userCltr = require('./app/controller/userCltr')
 const vehicleCltr = require('./app/controller/vehicleCltr')
 const tripCltr = require('./app/controller/tripCltr')
 const paymentCltr = require('./app/controller/paymentCltr')
+const vehicletypeCltr = require('./app/controller/vehicletypeCltr')
+
 //Validations
 const { userSignupValidationSchema, userLoginValidationSchema } = require('./app/helpers/user-validation')
 const { addVehicleValidationSchema } = require('./app/helpers/vehicleValidation')
 const { tripValidationSchema } = require('./app/helpers/trip-validaton')
 //Auth
 const { authenticateUser, authorizeUser } = require('./app/middleware/authentication')
-const chargeCltr = require('./app/controller/chargeCltr')
 const port = process.env.PORT
 
 const app = express()
@@ -66,8 +67,15 @@ app.get('/api/admin/:id/vehicle-info', authenticateUser, authorizeUser(['admin']
 //Approve Host's vehicle
 app.get('/api/admin/:id/approve', authenticateUser, authorizeUser(['admin']), vehicleCltr.approve)
 
-//charges apis
-app.post('/api/admin/:id/add-charge', authenticateUser, authorizeUser(['admin']), chargeCltr.add)
+//vehicletype apis
+//list vehicletype
+app.get('/api/vehicletype/list', authenticateUser, authorizeUser(['admin']), vehicletypeCltr.list)
+//add vehicletype
+app.post('/api/vehicletype/add', authenticateUser, authorizeUser(['admin']), vehicletypeCltr.add) //validation left
+//edit vehicletypes
+app.put('/api/vehicletype/:id/edit', authenticateUser, authorizeUser(['admin']), vehicletypeCltr.edit)
+//delete vehicletype
+app.delete('/api/vehicletype/:id/delete', authenticateUser, authorizeUser(['admin']), vehicletypeCltr.delete)
 
 app.listen(port, () => {
   console.log("server running on port", port)

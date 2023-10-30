@@ -59,5 +59,13 @@ const addChargeValidationSchema = {
   perHourCharger: perHourChargeSchema
 }
 
-module.exports = { addChargeValidationSchema }
+const editChargeValidationSchema = {
+  name: nameSchema,
+  minCc: minCcSchema,
+  maxCc: maxCcSchema,
+  perDayKmLimit: perDayKmLimitSchema,
+  perDayCharge: perDayChargeSchema,
+  perHourCharger: perHourChargeSchema
+}
 
+module.exports = { addChargeValidationSchema, editChargeValidationSchema }

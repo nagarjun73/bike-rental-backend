@@ -9,7 +9,10 @@ const vehicleSchema = new Schema({
   type: String,
   model: String,
   make: String,
-  engineCapacity: String,
+  vehicleType: {
+    type: Schema.Types.ObjectId,
+    ref: "Vehicletype"
+  },
   perDayLimit: String,
   distanceTravelled: Number,
   fuelCapacity: Number,
@@ -42,11 +45,10 @@ const vehicleSchema = new Schema({
     type: String,
     default: 'no ratings'
   },
-  perDayCharge: String,
   vehicleApproveStatus: {
     type: Boolean,
     default: false
-  },
+  }
 })
 
 const Vehicle = model("Vehicle", vehicleSchema)
