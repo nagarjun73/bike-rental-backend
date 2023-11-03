@@ -38,10 +38,13 @@ app.post('/api/users/register', checkSchema(userSignupValidationSchema), userClt
 app.get('/api/users/verify/:token', userCltr.verify)
 //User Login
 app.post('/api/users/login', checkSchema(userLoginValidationSchema), userCltr.login)
-//User Profile
+//User Profilequery
 app.get('/api/users/profile', authenticateUser, authorizeUser(['admin', 'user', 'host']), userCltr.profile)
 //Book Trip
 app.post('/api/trips/book', authenticateUser, authorizeUser(['admin', 'user']), checkSchema(tripValidationSchema), tripCltr.book)
+
+//Query Vehicles
+app.post('/api/vehicles/query', vehicleCltr.query)
 
 //Make Payment
 app.post('/api/payment', paymentCltr.pay)

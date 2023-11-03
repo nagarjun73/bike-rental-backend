@@ -32,7 +32,7 @@ const tripStartDateSchema = {
   custom: {
     //Check if trip start date is more then current time
     options: (value) => {
-      const currentDay = new Date().toISOString()
+      const currentDay = new Date()
       if (value < currentDay) {
         throw new Error("Please choose future date and time.")
       } else {

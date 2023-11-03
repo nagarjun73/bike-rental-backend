@@ -3,6 +3,7 @@ const Vehicle = require('../model/vehicleModel')
 const Charge = require('../model/vehicletypeModel')
 const s3 = require('../aws/awsS3Config')
 const { validationResult } = require('express-validator')
+const { areIntervalsOverlapping } = require('date-fns')
 
 const vehicleCltr = {}
 
@@ -102,6 +103,35 @@ vehicleCltr.approve = async (req, res) => {
     res.json(vehicle)
   } catch (e) {
     res.json(e)
+  }
+}
+
+vehicleCltr.query = async (req, res) => {
+  const body = req.body
+  try {
+    console.log(body)
+    const vehicle = await Vehicle.find().populate('trips')
+
+    function checkSlot(trips) {
+      const slots = []
+      trips.forEach((ele) => {
+        const overlapping = areIntervalsOverlapping(
+          { start: new Date(body.tripStartDate), end: new Date(body.tripEndDate) },
+          { start: new Date(ele.tripStartDate), end: new Date(ele.tripEndDate) }
+        )
+        console.log(overlapping)
+        if (overlapping) {
+          slots.push(ele)
+        }
+      })
+      return slots
+    }
+    const query = vehicle.filter((ele) => {
+      return !checkSlot(ele.trips).length
+    })
+    res.json(query)
+  } catch (e) {
+    res.status(401).json(e)
   }
 }
 
