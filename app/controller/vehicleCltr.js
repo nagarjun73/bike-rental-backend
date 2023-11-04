@@ -109,26 +109,62 @@ vehicleCltr.approve = async (req, res) => {
 vehicleCltr.query = async (req, res) => {
   const body = req.body
   try {
-    console.log(body)
-    const vehicle = await Vehicle.find().populate('trips')
 
-    function checkSlot(trips) {
-      const slots = []
-      trips.forEach((ele) => {
-        const overlapping = areIntervalsOverlapping(
-          { start: new Date(body.tripStartDate), end: new Date(body.tripEndDate) },
-          { start: new Date(ele.tripStartDate), end: new Date(ele.tripEndDate) }
-        )
-        console.log(overlapping)
-        if (overlapping) {
-          slots.push(ele)
+    const query = await Vehicle.aggregate([
+      {
+        $lookup: {
+          from: "Trips",
+          localField: "trips",
+          foreignField: "_id",
+          as: "tripDetails"
         }
-      })
-      return slots
-    }
-    const query = vehicle.filter((ele) => {
-      return !checkSlot(ele.trips).length
-    })
+      },
+      {
+        $match: {
+          "tripDetails": {
+            $not: {
+              $elemMatch: {
+                $or: [
+                  {
+                    tripStartDate: {
+                      $lte: new Date(body.tripEndDate)
+                    },
+                    tripEndDate: {
+                      $gte: new Date(body.tripStartDate)
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    ]);
+    // const vehicle = await Vehicle.find().populate('trips')
+
+    // //loops over every vehicle trips array
+    // function checkSlot(trips) {
+    //   const overlaps = []
+    //   trips.forEach((ele) => {
+    //     //date-fns method which checks if 2 intervals overlapping
+    //     const overlapping = areIntervalsOverlapping(
+    //       //enquiry 
+    //       { start: new Date(body.tripStartDate), end: new Date(body.tripEndDate) },
+    //       { start: new Date(ele.tripStartDate), end: new Date(ele.tripEndDate) }
+    //     )
+    //     //overlapped element will be pushed to overlaps array
+    //     if (overlapping) {
+    //       overlaps.push(ele)
+    //     }
+    //   })
+    //   return overlaps
+    // }
+
+    // //filter will return empty overlaps element
+    // const query = vehicle.filter((ele) => {
+    //   console.log(checkSlot(ele.trips).length)
+    //   return !checkSlot(ele.trips).length
+    // })
     res.json(query)
   } catch (e) {
     res.status(401).json(e)

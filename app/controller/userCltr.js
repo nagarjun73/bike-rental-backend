@@ -17,7 +17,7 @@ userCltr.register = async (req, res) => {
 
   //if any validation errors send error object
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() })
+    res.status(400).json({ errors: errors.array() })
   }
 
   //sanitizing input data using loadash

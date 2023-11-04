@@ -12,7 +12,10 @@ const profileSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Address"
   }],
-  city: String,
+  city: {
+    type: Schema.Types.ObjectId,
+    ref: "Location"
+  },
   profilePictureURL: String,
   drivingLicencePicURL: String,
   adharCardURL: String,

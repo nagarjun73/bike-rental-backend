@@ -12,11 +12,14 @@ const vehicleCltr = require('./app/controller/vehicleCltr')
 const tripCltr = require('./app/controller/tripCltr')
 const paymentCltr = require('./app/controller/paymentCltr')
 const vehicletypeCltr = require('./app/controller/vehicletypeCltr')
+const locationCltr = require('./app/controller/locationCltr')
 
 //Validations
 const { userSignupValidationSchema, userLoginValidationSchema } = require('./app/helpers/user-validation')
 const { addVehicleValidationSchema } = require('./app/helpers/vehicleValidation')
 const { tripValidationSchema } = require('./app/helpers/trip-validaton')
+const { locationValidationSchema } = require('./app/helpers/location-validation')
+
 //Auth
 const { authenticateUser, authorizeUser } = require('./app/middleware/authentication')
 const port = process.env.PORT
@@ -69,6 +72,10 @@ app.get('/api/admin/vehicles', authenticateUser, authorizeUser(['admin']), vehic
 app.get('/api/admin/:id/vehicle-info', authenticateUser, authorizeUser(['admin']), vehicleCltr.info)
 //Approve Host's vehicle
 app.get('/api/admin/:id/approve', authenticateUser, authorizeUser(['admin']), vehicleCltr.approve)
+//Add City
+app.post('/api/locations/add', authenticateUser, authorizeUser(['admin']), checkSchema(locationValidationSchema), locationCltr.add)//validation 
+//delete City
+app.delete('/api/locations/:id/delete', authenticateUser, authorizeUser(['admin']), locationCltr.delete)//validation 
 
 //vehicletype apis
 //list vehicletype
