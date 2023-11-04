@@ -1,6 +1,5 @@
 const _ = require('lodash')
 const Vehicle = require('../model/vehicleModel')
-const Charge = require('../model/vehicletypeModel')
 const s3 = require('../aws/awsS3Config')
 const { validationResult } = require('express-validator')
 const { areIntervalsOverlapping } = require('date-fns')

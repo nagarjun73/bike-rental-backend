@@ -110,13 +110,13 @@ userCltr.verify = async (req, res) => {
       user.verified = !user.verified
       const verified = await user.save()
       if (verified) {
-        //creating User Profile
-        const prof = new Profile()
-        prof.userId = user._id
-        const profileCreated = await prof.save()
-        if (profileCreated) {
-          res.json({ msg: "Your account has been successfully verified" })
-        }
+        // //creating User Profile
+        // const prof = new Profile()
+        // prof.userId = user._id
+        // const profileCreated = await prof.save()
+        // if (profileCreated) {
+        res.json({ msg: "Your account has been successfully verified" })
+        // }
       }
     } else {
       res.json({ msg: "Your account has already been verified." })

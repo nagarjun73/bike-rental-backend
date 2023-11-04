@@ -5,20 +5,8 @@ const profileSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  firstName: String,
-  lastName: String,
-  mobileNumber: Number,
-  address: [{
-    type: Schema.Types.ObjectId,
-    ref: "Address"
-  }],
-  city: {
-    type: Schema.Types.ObjectId,
-    ref: "Location"
-  },
-  profilePictureURL: String,
-  drivingLicencePicURL: String,
-  adharCardURL: String,
+  drivingLicence: Schema.Types.Array,
+  documentId: Schema.Types.Array,
   tripHistory: [{
     type: Schema.Types.ObjectId,
     ref: "Trip"
@@ -26,7 +14,16 @@ const profileSchema = new Schema({
   hostedTrips: [{
     type: Schema.Types.ObjectId,
     ref: "Trip"
-  }]
+  }],
+  address: String,
+  city: {
+    type: Schema.Types.ObjectId,
+    ref: "Location"
+  },
+  isVerified: {
+    type: Schema.Types.Boolean,
+    default: false
+  }
 }, { timestamps: true })
 
 const Profile = model("Profile", profileSchema)

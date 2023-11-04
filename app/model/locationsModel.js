@@ -1,6 +1,5 @@
 const { Schema, model } = require('mongoose')
 
-
 const locationSchema = new Schema({
   name: String
 })

@@ -4,7 +4,7 @@ const express = require('express')
 const cors = require('cors')
 const { checkSchema } = require('express-validator')
 
-const multerMiddleware = require('./app/aws/multer')
+const multerObj = require('./app/aws/multer')
 const configureDB = require('./app/config/mongodb')
 //Controllers
 const userCltr = require('./app/controller/userCltr')
@@ -13,6 +13,7 @@ const tripCltr = require('./app/controller/tripCltr')
 const paymentCltr = require('./app/controller/paymentCltr')
 const vehicletypeCltr = require('./app/controller/vehicletypeCltr')
 const locationCltr = require('./app/controller/locationCltr')
+const profileCltr = require('./app/controller/profileCltr')
 
 //Validations
 const { userSignupValidationSchema, userLoginValidationSchema } = require('./app/helpers/user-validation')
@@ -41,8 +42,10 @@ app.post('/api/users/register', checkSchema(userSignupValidationSchema), userClt
 app.get('/api/users/verify/:token', userCltr.verify)
 //User Login
 app.post('/api/users/login', checkSchema(userLoginValidationSchema), userCltr.login)
-//User Profilequery
+//User Profile query
 app.get('/api/users/profile', authenticateUser, authorizeUser(['admin', 'user', 'host']), userCltr.profile)
+//User Profile Add
+app.post('/api/users/add-doc', authenticateUser, authorizeUser(['user']), multerObj.addDocs(), profileCltr.addUserProfile)
 //Book Trip
 app.post('/api/trips/book', authenticateUser, authorizeUser(['admin', 'user']), checkSchema(tripValidationSchema), tripCltr.book)
 
@@ -56,10 +59,11 @@ app.post('/api/payment', paymentCltr.pay)
 //List Vehicle
 app.get('/api/host/all-vehicles', authenticateUser, authorizeUser(['host']), vehicleCltr.getVehicles)
 //Add vehicle
-app.post('/api/host/add-vehicle', authenticateUser, authorizeUser(['host']), multerMiddleware(), checkSchema(addVehicleValidationSchema), vehicleCltr.addVehicle)
+app.post('/api/host/add-vehicle', authenticateUser, authorizeUser(['host']), multerObj.addVehicle(), checkSchema(addVehicleValidationSchema), vehicleCltr.addVehicle)
 //Change status of vehicle
 app.put('/api/host/:id/change-status', authenticateUser, authorizeUser(['host']), vehicleCltr.changeStatus)
-
+//Host Profile Add
+app.post('/api/host/add-doc', authenticateUser, authorizeUser(['host']), multerObj.addDocs(), profileCltr.addHostProfile)
 
 //Admin's API's
 //Get all Users
