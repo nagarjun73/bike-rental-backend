@@ -55,6 +55,8 @@ app.post('/api/vehicles/query', vehicleCltr.query)
 //Make Payment
 app.post('/api/payment', paymentCltr.pay)
 
+
+
 //Host's API's  
 //List Vehicle
 app.get('/api/host/all-vehicles', authenticateUser, authorizeUser(['host']), vehicleCltr.getVehicles)
@@ -64,6 +66,7 @@ app.post('/api/host/add-vehicle', authenticateUser, authorizeUser(['host']), mul
 app.put('/api/host/:id/change-status', authenticateUser, authorizeUser(['host']), vehicleCltr.changeStatus)
 //Host Profile Add
 app.post('/api/host/add-doc', authenticateUser, authorizeUser(['host']), multerObj.addDocs(), profileCltr.addHostProfile)
+
 
 //Admin's API's
 //Get all Users
@@ -90,6 +93,11 @@ app.post('/api/vehicletype/add', authenticateUser, authorizeUser(['admin']), veh
 app.put('/api/vehicletype/:id/edit', authenticateUser, authorizeUser(['admin']), vehicletypeCltr.edit)
 //delete vehicletype
 app.delete('/api/vehicletype/:id/delete', authenticateUser, authorizeUser(['admin']), vehicletypeCltr.delete)
+
+//Profile Approve
+app.get('/api/profiles/:id/approve', authenticateUser, authorizeUser(['admin']), profileCltr.approveUnverified)
+//Profile unApproved List
+app.get('/api/profiles/list', authenticateUser, authorizeUser(['admin']), profileCltr.unVerifiedList)
 
 app.listen(port, () => {
   console.log("server running on port", port)

@@ -81,4 +81,25 @@ profileCltr.addHostProfile = async (req, res) => {
   }
 }
 
+
+profileCltr.unVerifiedList = async (req, res) => {
+  try {
+    const list = await Profile.find({ isVerified: false })
+    res.json(list)
+  } catch (e) {
+    res.status(400).json(e)
+  }
+}
+
+profileCltr.approveUnverified = async (req, res) => {
+  const id = req.params.id
+  console.log(id)
+  try {
+    const approve = await Profile.findByIdAndUpdate(id, { isVerified: true }, { new: true })
+    res.json(approve)
+  } catch (e) {
+    res.status(400).json(e)
+  }
+}
+
 module.exports = profileCltr
