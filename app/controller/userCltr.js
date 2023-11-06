@@ -21,7 +21,7 @@ userCltr.register = async (req, res) => {
   }
 
   //sanitizing input data using loadash
-  const body = _.pick(req.body, ["name", 'email', 'mobileNumber', 'password'])
+  const body = _.pick(req.body, ["name", 'email', 'mobileNumber', 'password', "role"])
   try {
 
     //checking if user is already registerd and verified
@@ -69,7 +69,6 @@ userCltr.register = async (req, res) => {
         usr.role = 'admin'
       }
       const result = await usr.save()
-      console.log(result)
       if (result) {
 
         //generating token for verification
@@ -84,7 +83,6 @@ userCltr.register = async (req, res) => {
           subject: "Verify your Bike Rental Account",
           html: `<div><p>Hey Thank you for Joining Bike Rentals. Please verify your account from below Link</p><a href=${url}>Verify</a></div>`
         })
-        console.log(sentMail)
 
         res.json({
           msg: `${result.name}, Please Verify your email send to your email address to access your account`
@@ -95,7 +93,6 @@ userCltr.register = async (req, res) => {
     res.json(e)
   }
 }
-
 
 
 // This function handles Email Verification

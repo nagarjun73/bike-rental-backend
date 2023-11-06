@@ -60,10 +60,21 @@ const passwordSchema = {
   }
 }
 
+const roleSchema = {
+  notEmpty: {
+    errorMessage: "role should not be empty"
+  },
+  isIn: {
+    options: [['user', 'host']],
+    errorMessage: "Invalid role selection"
+  }
+}
+
 const userSignupValidationSchema = {
   name: nameSchema,
   email: emailSchema,
   mobileNumber: mobileNumberSchema,
+  role: roleSchema,
   password: passwordSchema
 }
 
