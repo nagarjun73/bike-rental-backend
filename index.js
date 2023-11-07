@@ -49,6 +49,9 @@ app.post('/api/users/add-doc', authenticateUser, authorizeUser(['user']), multer
 //Book Trip
 app.post('/api/trips/book', authenticateUser, authorizeUser(['admin', 'user']), checkSchema(tripValidationSchema), tripCltr.book)
 
+//List all city
+app.get('/api/locations/list', locationCltr.list)
+
 //Query Vehicles
 app.post('/api/vehicles/query', vehicleCltr.query)
 
@@ -80,8 +83,7 @@ app.get('/api/admin/:id/vehicle-info', authenticateUser, authorizeUser(['admin']
 //Approve Host's vehicle
 app.get('/api/admin/:id/approve', authenticateUser, authorizeUser(['admin']), vehicleCltr.approve)
 
-//List all city
-app.get('/api/locations/list', authenticateUser, authorizeUser(['admin']), locationCltr.list)
+
 //Add City
 app.post('/api/locations/add', authenticateUser, authorizeUser(['admin']), checkSchema(locationValidationSchema), locationCltr.add)//validation 
 //delete City
