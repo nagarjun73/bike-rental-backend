@@ -1,5 +1,6 @@
 const _ = require('lodash')
 const Vehicle = require('../model/vehicleModel')
+const { ObjectId } = require('mongodb')
 const s3 = require('../aws/awsS3Config')
 const { validationResult } = require('express-validator')
 const { areIntervalsOverlapping } = require('date-fns')
@@ -109,61 +110,76 @@ vehicleCltr.query = async (req, res) => {
   const body = req.body
   try {
 
-    const query = await Vehicle.aggregate([
-      {
-        $lookup: {
-          from: "Trips",
-          localField: "trips",
-          foreignField: "_id",
-          as: "tripDetails"
-        }
-      },
-      {
-        $match: {
-          "tripDetails": {
-            $not: {
-              $elemMatch: {
-                $or: [
-                  {
-                    tripStartDate: {
-                      $lte: new Date(body.tripEndDate)
-                    },
-                    tripEndDate: {
-                      $gte: new Date(body.tripStartDate)
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        }
+    const vehiclesByCity = await Vehicle.aggregate([{
+      $lookup: {
+        from: "profiles",
+        localField: "hostId",
+        foreignField: "userId",
+        as: "hostProfile"
       }
-    ]);
-    // const vehicle = await Vehicle.find().populate('trips')
+    },
+    {
+      $match: {
+        "hostProfile.city": new ObjectId(body.location)
+      }
+    },
+      // {
+      //   $lookup: {
+      //     from: "Trips",
+      //     localField: "trips",
+      //     foreignField: "_id",
+      //     as: "tripDetails"
+      //   }
+      // },
+      // {
+      //   $match: {
+      //     "tripDetails": {
+      //       $not: {
+      //         $elemMatch: {
+      //           $or: [
+      //             {
+      //               tripStartDate: {
+      //                 $lte: new Date(body.tripEndDate)
+      //               },
+      //               tripEndDate: {
+      //                 $gte: new Date(body.tripStartDate)
+      //               }
+      //             }
+      //           ]
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
+    ])
 
-    // //loops over every vehicle trips array
-    // function checkSlot(trips) {
-    //   const overlaps = []
-    //   trips.forEach((ele) => {
-    //     //date-fns method which checks if 2 intervals overlapping
-    //     const overlapping = areIntervalsOverlapping(
-    //       //enquiry 
-    //       { start: new Date(body.tripStartDate), end: new Date(body.tripEndDate) },
-    //       { start: new Date(ele.tripStartDate), end: new Date(ele.tripEndDate) }
-    //     )
-    //     //overlapped element will be pushed to overlaps array
-    //     if (overlapping) {
-    //       overlaps.push(ele)
-    //     }
-    //   })
-    //   return overlaps
-    // }
 
-    // //filter will return empty overlaps element
-    // const query = vehicle.filter((ele) => {
-    //   console.log(checkSlot(ele.trips).length)
-    //   return !checkSlot(ele.trips).length
-    // })
+    const vehicle = await Vehicle.populate(vehiclesByCity, { path: 'trips', model: 'Trip' });
+
+
+    //loops over every vehicle trips array
+    function checkSlot(trips) {
+      const overlaps = []
+      trips.forEach((ele) => {
+        //date-fns method which checks if 2 intervals overlapping
+        const overlapping = areIntervalsOverlapping(
+          //enquiry 
+          { start: new Date(body.tripStartDate), end: new Date(body.tripEndDate) },
+          { start: new Date(ele.tripStartDate), end: new Date(ele.tripEndDate) }
+        )
+        //overlapped element will be pushed to overlaps array
+        if (overlapping) {
+          overlaps.push(ele)
+        }
+      })
+      return overlaps
+    }
+
+    //filter will return empty overlaps element
+    const query = vehicle.filter((ele) => {
+      console.log(checkSlot(ele.trips).length)
+      return !checkSlot(ele.trips).length
+    })
     res.json(query)
   } catch (e) {
     res.status(401).json(e)
