@@ -79,10 +79,14 @@ app.get('/api/admin/vehicles', authenticateUser, authorizeUser(['admin']), vehic
 app.get('/api/admin/:id/vehicle-info', authenticateUser, authorizeUser(['admin']), vehicleCltr.info)
 //Approve Host's vehicle
 app.get('/api/admin/:id/approve', authenticateUser, authorizeUser(['admin']), vehicleCltr.approve)
+
+//List all city
+app.get('/api/locations/list', authenticateUser, authorizeUser(['admin']), locationCltr.list)
 //Add City
 app.post('/api/locations/add', authenticateUser, authorizeUser(['admin']), checkSchema(locationValidationSchema), locationCltr.add)//validation 
 //delete City
 app.delete('/api/locations/:id/delete', authenticateUser, authorizeUser(['admin']), locationCltr.delete)//validation 
+
 
 //vehicletype apis
 //list vehicletype

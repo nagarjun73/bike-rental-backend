@@ -4,6 +4,15 @@ const { validationResult } = require('express-validator')
 
 const locationCltr = {}
 
+locationCltr.list = async (req, res) => {
+  try {
+    const locationList = await Location.find()
+    res.json(locationList)
+  } catch (e) {
+    res.json(e)
+  }
+}
+
 locationCltr.add = async (req, res) => {
   const body = _.pick(req.body, ['name'])
   try {
