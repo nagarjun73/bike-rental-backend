@@ -11,7 +11,7 @@ vehicleCltr.addVehicle = async (req, res) => {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() })
+      return res.status(400).json({ errors: errors.array() })
     } else {
 
       const body = _.pick(req.body, ['type', 'model', 'vehicleType', 'distanceTravelled', 'registrationNumber',])//Sanitize

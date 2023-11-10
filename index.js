@@ -20,6 +20,7 @@ const { userSignupValidationSchema, userLoginValidationSchema } = require('./app
 const { addVehicleValidationSchema } = require('./app/helpers/vehicleValidation')
 const { tripValidationSchema } = require('./app/helpers/trip-validaton')
 const { locationValidationSchema } = require('./app/helpers/location-validation')
+const { userProfileValidationSchema, hostProfileValidationSchema } = require('./app/helpers/profile-validation')
 
 //Auth
 const { authenticateUser, authorizeUser } = require('./app/middleware/authentication')
@@ -45,7 +46,7 @@ app.post('/api/users/login', checkSchema(userLoginValidationSchema), userCltr.lo
 //User Profile query
 app.get('/api/users/profile', authenticateUser, authorizeUser(['admin', 'user', 'host']), userCltr.profile)
 //User Profile Add
-app.post('/api/users/add-doc', authenticateUser, authorizeUser(['user']), multerObj.addDocs(), profileCltr.addUserProfile)
+app.post('/api/users/add-doc', authenticateUser, authorizeUser(['user']), multerObj.addDocs(), checkSchema(userProfileValidationSchema), profileCltr.addUserProfile)
 //Book Trip
 app.post('/api/trips/book', authenticateUser, authorizeUser(['admin', 'user']), checkSchema(tripValidationSchema), tripCltr.book)
 
@@ -68,7 +69,7 @@ app.post('/api/host/add-vehicle', authenticateUser, authorizeUser(['host']), mul
 //Change status of vehicle
 app.put('/api/host/:id/change-status', authenticateUser, authorizeUser(['host']), vehicleCltr.changeStatus)
 //Host Profile Add
-app.post('/api/host/add-doc', authenticateUser, authorizeUser(['host']), multerObj.addDocs(), profileCltr.addHostProfile)
+app.post('/api/host/add-doc', authenticateUser, authorizeUser(['host']), multerObj.addDocs(), checkSchema(hostProfileValidationSchema), profileCltr.addHostProfile)
 
 
 //Admin's API's

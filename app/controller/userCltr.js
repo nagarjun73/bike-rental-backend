@@ -17,7 +17,7 @@ userCltr.register = async (req, res) => {
 
   //if any validation errors send error object
   if (!errors.isEmpty()) {
-    res.status(400).json({ errors: errors.array() })
+    return res.status(400).json({ errors: errors.array() })
   }
 
   //sanitizing input data using loadash
@@ -130,7 +130,7 @@ userCltr.login = async (req, res) => {
 
     //If any errors
     if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() })
+      return res.status(400).json({ errors: errors.array() })
     }
     // Sanitize input data
     const body = _.pick(req.body, ['emailOrMobile', 'password'])

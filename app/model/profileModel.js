@@ -5,8 +5,14 @@ const profileSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  drivingLicence: Schema.Types.Array,
-  documentId: Schema.Types.Array,
+  drivingLicence: [{
+    url: String,
+    key: String
+  }],
+  documentId: [{
+    url: String,
+    key: String
+  }],
   tripHistory: [{
     type: Schema.Types.ObjectId,
     ref: "Trip"

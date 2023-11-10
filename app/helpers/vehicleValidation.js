@@ -1,5 +1,3 @@
-
-
 const typeSchema = {
   notEmpty: {
     errorMessage: "Type should not be Empty"
@@ -14,7 +12,7 @@ const modelSchema = {
 
 const vehicleTypeSchema = {
   notEmpty: {
-    errorMessage: "Engine capacity is required"
+    errorMessage: "Please select vehicle type"
   }
 }
 
@@ -24,7 +22,7 @@ const distanceTravelledSchema = {
     bail: true
   },
   isNumeric: {
-    errorMessage: "Field should have numbers only"
+    errorMessage: "Field should be in numbers only"
   }
 }
 

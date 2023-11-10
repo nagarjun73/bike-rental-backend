@@ -1,10 +1,15 @@
 const _ = require('lodash')
 const s3 = require('../aws/awsS3Config')
 const Profile = require('../model/profileModel')
+const { validationResult } = require('express-validator')
 
 const profileCltr = {}
 
 profileCltr.addUserProfile = async (req, res) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() })
+  }
   const { drivingLicence, documentId } = req.files
   try {
     const arrDocs = [...drivingLicence, ...documentId]
@@ -42,6 +47,12 @@ profileCltr.addUserProfile = async (req, res) => {
 
 
 profileCltr.addHostProfile = async (req, res) => {
+  //checking any errors
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() })
+  }
+
   const body = _.pick(req.body, ["address", "city"])
   const { drivingLicence, documentId } = req.files
   const arrDocs = [...drivingLicence, ...documentId]

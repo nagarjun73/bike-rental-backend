@@ -1,5 +1,4 @@
 
-
 const vehicleIdSchema = {
   notEmpty: {
     errorMessage: "vehicle id should not be empty",
@@ -66,33 +65,11 @@ const tripEndDateSchema = {
   }
 }
 
-const perDayChargeSchema = {
-  notEmpty: {
-    errorMessage: "Field should not be Empty",
-    bail: true
-  },
-  isNumeric: {
-    errorMessage: "Field should be in number"
-  }
-}
-
-const perHourChargeSchema = {
-  notEmpty: {
-    errorMessage: "Field should not be empty",
-    bail: true
-  },
-  isNumeric: {
-    errorMessage: "Field should be in Number"
-  }
-}
-
 const tripValidationSchema = {
   vehicleId: vehicleIdSchema,
   hostId: hostIdSchema,
   tripStartDate: tripStartDateSchema,
   tripEndDate: tripEndDateSchema,
-  // perDayCharge: perDayChargeSchema,
-  // perHourCharge: perHourChargeSchema
 }
 
 module.exports = { tripValidationSchema }

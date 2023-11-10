@@ -18,7 +18,7 @@ locationCltr.add = async (req, res) => {
   try {
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() })
+      return res.status(400).json({ errors: errors.array() })
     }
 
     const location = new Location(body)
