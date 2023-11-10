@@ -156,6 +156,16 @@ userCltr.login = async (req, res) => {
   }
 }
 
+userCltr.account = async (req, res) => {
+  try {
+    const id = req.user.id
+    const account = await User.findById({ _id: id })
+    res.json(account)
+  } catch (e) {
+    res.status(500).json({ errors: 'something went wrong' })
+  }
+}
+
 userCltr.profile = async (req, res) => {
   try {
     const user = req.user

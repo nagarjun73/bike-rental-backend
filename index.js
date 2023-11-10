@@ -43,6 +43,8 @@ app.post('/api/users/register', checkSchema(userSignupValidationSchema), userClt
 app.get('/api/users/verify/:token', userCltr.verify)
 //User Login
 app.post('/api/users/login', checkSchema(userLoginValidationSchema), userCltr.login)
+//User account
+app.get('/api/users/account', authenticateUser, userCltr.account)
 //User Profile query
 app.get('/api/users/profile', authenticateUser, authorizeUser(['admin', 'user', 'host']), userCltr.profile)
 //User Profile Add
