@@ -21,36 +21,17 @@ const emailSchema = {
   isEmail: {
     errorMessage: "Email is Invalid"
   },
-  // custom: {
-  //   options: async (value) => {
-  //     const user = await User.findOne({ email: value })
-  //     if (user) {
-  //       throw new Error('Email is already in use.')
-  //     } else {
-  //       return true
-  //     }
-  //   }
-  // }
 }
 
 const mobileNumberSchema = {
   isNumeric: {
-    errorMessage: "Enter numbers only"
+    errorMessage: "Enter numbers only",
+    bail: true
   },
   isLength: {
     options: { min: 10, max: 10 },
     errorMessage: 'Mobile number should be 10 characters'
   },
-  // custom: {
-  //   options: async (value) => {
-  //     const user = await User.findOne({ mobileNumber: value })
-  //     if (user) {
-  //       throw new Error('Mobile number is already in use')
-  //     } else {
-  //       return true
-  //     }
-  //   }
-  // }
 }
 
 const passwordSchema = {
@@ -68,7 +49,8 @@ const loginPasswordSchema = {
 
 const roleSchema = {
   notEmpty: {
-    errorMessage: "role should not be empty"
+    errorMessage: "role should not be empty",
+    bail: true
   },
   isIn: {
     options: [['user', 'host']],

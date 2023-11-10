@@ -12,7 +12,8 @@ const nameSchema = {
 
 const minCcSchema = {
   notEmpty: {
-    errorMessage: "Field should not be Empty"
+    errorMessage: "Field should not be Empty",
+    bail: true
   },
   isNumeric: {
     errorMessage: "Field should be a number"
@@ -21,7 +22,8 @@ const minCcSchema = {
 
 const maxCcSchema = {
   notEmpty: {
-    errorMessage: "Field should not be Empty"
+    errorMessage: "Field should not be Empty",
+    bail: true
   },
   isNumeric: {
     errorMessage: "Field should be a number"
@@ -30,7 +32,8 @@ const maxCcSchema = {
 
 const perDayKmLimitSchema = {
   notEmpty: {
-    errorMessage: "Field should not be Empty"
+    errorMessage: "Field should not be Empty",
+    bail: true
   },
   isInt: {
     errorMessage: "The input must be within the range of 100 km to 300 km",
