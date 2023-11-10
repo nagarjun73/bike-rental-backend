@@ -124,24 +124,26 @@ userCltr.verify = async (req, res) => {
 }
 
 userCltr.login = async (req, res) => {
-  const errors = validationResult(req)
-
-  if (!errors.isEmpty()) {
-    res.status(400).json({ errors: errors.array() })
-  }
   try {
+    //Check if any Validation errors
+    const errors = validationResult(req)
+
+    //If any errors
+    if (!errors.isEmpty()) {
+      res.status(400).json({ errors: errors.array() })
+    }
     // Sanitize input data
     const body = _.pick(req.body, ['emailOrMobile', 'password'])
     //Checking if user present on database
     const user = await User.findOne({ $or: [{ email: body.emailOrMobile }, { mobileNumber: body.emailOrMobile }] })
     if (!user) {
-      res.status(400).json({ errors: "Invalid login credentials. Please check your username and password." })
+      res.status(404).json({ errors: "Invalid email / password" })
     } else {
 
       //comparing input password with found user using bcryptjs
       const verified = await bcryptjs.compare(body.password, user.password)
       if (!verified) {
-        res.json({ errors: "Invalid password." })
+        res.status(404).json({ errors: "Invalid password." })
       } else {
 
         //generating token after password verified
@@ -150,7 +152,7 @@ userCltr.login = async (req, res) => {
       }
     }
   } catch (e) {
-    res.json(e)
+    res.status(400).json(e)
   }
 }
 

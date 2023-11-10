@@ -60,6 +60,12 @@ const passwordSchema = {
   }
 }
 
+const loginPasswordSchema = {
+  notEmpty: {
+    errorMessage: "Password should not be empty"
+  }
+}
+
 const roleSchema = {
   notEmpty: {
     errorMessage: "role should not be empty"
@@ -80,7 +86,7 @@ const userSignupValidationSchema = {
 
 const userLoginValidationSchema = {
   emailOrMobile: emailOrMobileSchema,
-  password: passwordSchema
+  password: loginPasswordSchema
 }
 
 module.exports = { userSignupValidationSchema, userLoginValidationSchema }
