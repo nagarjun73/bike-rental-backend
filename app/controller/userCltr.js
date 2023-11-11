@@ -33,7 +33,7 @@ userCltr.register = async (req, res) => {
 
         //generating token for verification
         const token = jwt.sign({ id: foundUser._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN })
-        const url = `http://localhost:${process.env.PORT}/api/users/verify/${token}`
+        const url = `${process.env.BACKEND_URL}/api/users/verify/${token}`
 
         //sending verification link using nodemailer 
         const sentMail = await transporter.sendMail({
@@ -73,7 +73,7 @@ userCltr.register = async (req, res) => {
 
         //generating token for verification
         const token = jwt.sign({ id: result._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN })
-        const url = `http://localhost:${process.env.PORT}/api/users/verify/${token}`
+        const url = `${process.env.BACKEND_URL}/api/users/verify/${token}`
 
         //sending verification link using nodemailer 
         const sentMail = await transporter.sendMail({
