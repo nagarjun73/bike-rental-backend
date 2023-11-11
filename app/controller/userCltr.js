@@ -136,20 +136,25 @@ userCltr.login = async (req, res) => {
     const body = _.pick(req.body, ['emailOrMobile', 'password'])
     //Checking if user present on database
     const user = await User.findOne({ $or: [{ email: body.emailOrMobile }, { mobileNumber: body.emailOrMobile }] })
-    if (!user) {
-      res.status(404).json({ errors: "Invalid email / password" })
-    } else {
-
-      //comparing input password with found user using bcryptjs
-      const verified = await bcryptjs.compare(body.password, user.password)
-      if (!verified) {
-        res.status(404).json({ errors: "Invalid password." })
+    const userVerified = user.verified
+    if (userVerified) {
+      if (!user) {
+        res.status(404).json({ errors: "Invalid email / password" })
       } else {
 
-        //generating token after password verified
-        const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' })
-        res.json({ token: token })
+        //comparing input password with found user using bcryptjs
+        const verified = await bcryptjs.compare(body.password, user.password)
+        if (!verified) {
+          res.status(404).json({ errors: "Invalid password." })
+        } else {
+
+          //generating token after password verified
+          const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' })
+          res.json({ token: token })
+        }
       }
+    } else {
+      res.status(401).json({ errors: "Your Account is not Verified" })
     }
   } catch (e) {
     res.status(400).json(e)
