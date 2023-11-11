@@ -160,7 +160,8 @@ userCltr.account = async (req, res) => {
   try {
     const id = req.user.id
     const account = await User.findById({ _id: id })
-    res.json(account)
+    const body = _.pick(account, ['_id', 'name', "email", "mobileNumber", "role", "verified"])
+    res.json(body)
   } catch (e) {
     res.status(500).json({ errors: 'something went wrong' })
   }
