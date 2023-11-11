@@ -153,7 +153,15 @@ userCltr.login = async (req, res) => {
           res.json({ token: token })
         }
       } else {
-        res.status(401).json({ errors: "Your Account is not Verified. Check your Email or Sign in again to start fresh verification" })
+        //sending verification link using nodemailer 
+        const sentMail = await transporter.sendMail({
+          from: process.env.EMAIL,
+          // to: result.email,
+          to: 'invisiblecircuit@gmail.com',
+          subject: "Verify your Bike Rental Account",
+          html: `<div><p>Hey Thank you for Joining Bike Rentals. Please verify your account from below Link</p><a href=${url}>Verify</a></div>`
+        })
+        res.status(401).json({ errors: "Your Account is not Verified. Check your Email" })
       }
     }
   } catch (e) {
