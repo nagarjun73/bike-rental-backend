@@ -153,6 +153,9 @@ userCltr.login = async (req, res) => {
           res.json({ token: token })
         }
       } else {
+        //generating token for verification
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN })
+        const url = `${process.env.BACKEND_URL}/api/users/verify/${token}`
         //sending verification link using nodemailer 
         const sentMail = await transporter.sendMail({
           from: process.env.EMAIL,
@@ -161,7 +164,7 @@ userCltr.login = async (req, res) => {
           subject: "Verify your Bike Rental Account",
           html: `<div><p>Hey Thank you for Joining Bike Rentals. Please verify your account from below Link</p><a href=${url}>Verify</a></div>`
         })
-        res.status(401).json({ errors: "Your Account is not Verified. Check your Email" })
+        res.status(401).json({ errors: "Your Account is not Verified. Check your Email and verify" })
       }
     }
   } catch (e) {
