@@ -136,12 +136,13 @@ userCltr.login = async (req, res) => {
     const body = _.pick(req.body, ['emailOrMobile', 'password'])
     //Checking if user present on database
     const user = await User.findOne({ $or: [{ email: body.emailOrMobile }, { mobileNumber: body.emailOrMobile }] })
-    const userVerified = user.verified
-    if (userVerified) {
-      if (!user) {
-        res.status(404).json({ errors: "Invalid email / password" })
-      } else {
-
+    console.log(user)
+    if (!user) {
+      res.status(404).json({ errors: "Invalid email / password" })
+    } else {
+      //Checking if user verified
+      const userVerified = user.verified
+      if (userVerified) {
         //comparing input password with found user using bcryptjs
         const verified = await bcryptjs.compare(body.password, user.password)
         if (!verified) {
@@ -152,9 +153,9 @@ userCltr.login = async (req, res) => {
           const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' })
           res.json({ token: token })
         }
+      } else {
+        res.status(401).json({ errors: "Your Account is not Verified" })
       }
-    } else {
-      res.status(401).json({ errors: "Your Account is not Verified" })
     }
   } catch (e) {
     res.status(400).json(e)
