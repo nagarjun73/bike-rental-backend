@@ -35,8 +35,8 @@ profileCltr.addUserProfile = async (req, res) => {
       profile.userId = req.user.id
       profile.drivingLicence = getUrlObj('drivingLicence')
       profile.documentId = getUrlObj('documentId')
-      await profile.save()
-      res.json(profile)
+      const prfl = await profile.save()
+      res.json({ msg: "Thank you for submitting your documents! We have received them successfully. Please be patient as we verify your documents. We appreciate your cooperation and will notify you once the verification process is complete" })
     } else {
       res.status(400).json({ msg: "Profile already Present" })
     }

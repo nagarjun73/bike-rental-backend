@@ -90,7 +90,7 @@ userCltr.register = async (req, res) => {
       }
     }
   } catch (e) {
-    res.json(e)
+    res.staus(400).json(e)
   }
 }
 
@@ -119,7 +119,7 @@ userCltr.verify = async (req, res) => {
       res.json({ msg: "Your account has already been verified." })
     }
   } catch (e) {
-    res.json(e)
+    res.status(400).json(e)
   }
 }
 
@@ -186,10 +186,10 @@ userCltr.account = async (req, res) => {
 userCltr.profile = async (req, res) => {
   try {
     const user = req.user
-    const profile = await Profile.findOne({ userId: user.id }).populate(['userId'])
+    const profile = await Profile.findOne({ userId: user.id }).populate('city')
     res.json(profile)
   } catch (e) {
-    res.json(e)
+    res.status(404).json(e)
   }
 }
 
@@ -198,7 +198,7 @@ userCltr.list = async (req, res) => {
     const users = await User.find()
     res.json(users)
   } catch (e) {
-    res.json(e)
+    res.status(404).json(e)
   }
 }
 
@@ -208,7 +208,7 @@ userCltr.search = async (req, res) => {
     const foundUser = await User.findById(id)
     res.json(foundUser)
   } catch (e) {
-    res.json(e)
+    res.status(404).json(e)
   }
 }
 
