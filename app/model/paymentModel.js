@@ -11,7 +11,15 @@ const paymentSchema = new Schema({
   },
   amount: String,
   paymentType: String,
-  paymentStatus: String, //"Pending",
+  stripTransactionId: {
+    type: String,
+    default: null
+  },
+  paymentStatus: {
+    type: String,
+    enum: ['pending', 'Successful'],
+    default: "pending"
+  }
 }, { timestamps: true })
 
 const Payment = model("Payment", paymentSchema)

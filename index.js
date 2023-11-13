@@ -61,7 +61,14 @@ app.get('/api/locations/list', locationCltr.list)
 app.post('/api/vehicles/query', vehicleCltr.query)
 
 //Make Payment
-app.post('/api/payment', paymentCltr.pay)
+app.post('/api/payments', authenticateUser, authorizeUser(['user']), paymentCltr.pay) //Validation
+
+//update Payment
+app.get('/api/payments/update/:id', authenticateUser, authorizeUser(['user']), paymentCltr.update)
+
+//delete payment
+app.get('/api/payments/delete/:id', authenticateUser, authorizeUser(['user']), paymentCltr.destroy)
+
 
 
 
