@@ -15,8 +15,8 @@ const tripSchema = new Schema({
   },
   tripStatus: {
     type: String,
-    enum: ["booked", "inprogress", "completed"],
-    default: "booked"
+    enum: ["pending", "booked", "inprogress", "completed"],
+    default: "pending"
   },
   tripStartDate: Date,
   tripEndDate: Date,

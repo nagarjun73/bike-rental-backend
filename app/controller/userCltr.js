@@ -43,12 +43,12 @@ userCltr.register = async (req, res) => {
           subject: "Verify your Bike Rental Account",
           html: `<div><p>Hey Thank you for Joining Bike Rentals. Please verify your account from below Link</p><a href=${url}>Verify</a></div>`
         })
-        res.status(400).json({ errors: "account has already been registered with this email. Please verify the email which sent to you to Activate it." })
+        res.status(400).json({ errors: [{ msg: "account has already been registered with this email. Please verify the email which sent to you to Activate it." }] })
 
       } else if (foundUser.verified == true) {
 
         //if found user verified
-        res.status(400).json({ errors: 'Email is already in use.' })
+        res.status(400).json({ errors: [{ msg: 'Email is already in use.' }] })
       }
 
     } else {
@@ -107,13 +107,7 @@ userCltr.verify = async (req, res) => {
       user.verified = !user.verified
       const verified = await user.save()
       if (verified) {
-        // //creating User Profile
-        // const prof = new Profile()
-        // prof.userId = user._id
-        // const profileCreated = await prof.save()
-        // if (profileCreated) {
         res.json({ msg: "Your account has been successfully verified" })
-        // }
       }
     } else {
       res.json({ msg: "Your account has already been verified." })

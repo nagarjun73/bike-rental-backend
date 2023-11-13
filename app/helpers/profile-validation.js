@@ -1,14 +1,5 @@
 
-const addressSchema = {
-  notEmpty: {
-    errorMessage: "Address is required",
-    bail: true
-  },
-  isLength: {
-    errorMessage: "Address must be minimum 25 characters",
-    options: { min: 25 }
-  }
-}
+
 
 const citySchema = {
   notEmpty: {
@@ -49,6 +40,45 @@ const documentIdSchema = {
   }
 }
 
+const streetAreaSchema = {
+  notEmpty: {
+    errorMessage: "field is required",
+    bail: true
+  },
+  isLength: {
+    options: { min: 8, max: 80 },
+    errorMessage: "field should be between 5 to 80 characters"
+  }
+}
+
+const stateSchema = {
+  notEmpty: {
+    errorMessage: "state is required",
+    bail: true
+  },
+  isLength: {
+    options: { max: 30 },
+    errorMessage: "state name should be within 30 characters"
+  }
+}
+
+const pincodeSchema = {
+  notEmpty: {
+    errorMessage: "pincode is required",
+    bail: true
+  },
+  isLength: {
+    options: { max: 6 },
+    errorMessage: "pincode should be 6 digits",
+    bail: true
+  },
+  isNumeric: {
+    options: { no_symbols: true },
+    errorMessage: "pincode should be number"
+  }
+}
+
+
 const userProfileValidationSchema = {
   drivingLicence: drivingLicenceSchema,
   documentId: documentIdSchema
@@ -57,8 +87,11 @@ const userProfileValidationSchema = {
 const hostProfileValidationSchema = {
   drivingLicence: drivingLicenceSchema,
   documentId: documentIdSchema,
-  address: addressSchema,
-  city: citySchema
+  city: citySchema,
+  "address.street": streetAreaSchema,
+  "address.area": streetAreaSchema,
+  "address.state": stateSchema,
+  "address.pincode": pincodeSchema
 }
 
 module.exports = { userProfileValidationSchema, hostProfileValidationSchema }

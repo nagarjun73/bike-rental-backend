@@ -51,6 +51,8 @@ app.get('/api/users/profile', authenticateUser, authorizeUser(['admin', 'user', 
 app.post('/api/users/add-doc', authenticateUser, authorizeUser(['user']), multerObj.addDocs(), checkSchema(userProfileValidationSchema), profileCltr.addUserProfile)
 //Book Trip
 app.post('/api/trips/book', authenticateUser, authorizeUser(['admin', 'user']), checkSchema(tripValidationSchema), tripCltr.book)
+//get trip details
+app.get('/api/trips/:id', authenticateUser, authorizeUser(['admin', 'user']), tripCltr.detail)
 
 //List all city
 app.get('/api/locations/list', locationCltr.list)

@@ -37,4 +37,17 @@ tripCltr.book = async (req, res) => {
   }
 }
 
+
+tripCltr.detail = async (req, res) => {
+  const id = req.params.id
+  try {
+    const trip = await Trip.findById(id).populate("vehicleId", ["model", "registrationNumber"])
+    const profile = await Profile.findOne({ userId: trip.hostId }).populate('userId', ["name"])
+    const details = _.pick(profile, ['address', "userId"])
+    res.json({ trip, details })
+  } catch (e) {
+    res.status(400).json(e)
+  }
+}
+
 module.exports = tripCltr

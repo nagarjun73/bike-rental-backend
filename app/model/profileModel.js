@@ -21,7 +21,12 @@ const profileSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Trip"
   }],
-  address: String,
+  address: {
+    street: String,
+    area: String,
+    state: String,
+    pincode: Number
+  },
   city: {
     type: Schema.Types.ObjectId,
     ref: "Location"
