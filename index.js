@@ -60,6 +60,9 @@ app.get('/api/locations/list', locationCltr.list)
 //Query Vehicles
 app.post('/api/vehicles/query', vehicleCltr.query)
 
+
+
+//PAYMENT APIS
 //Make Payment
 app.post('/api/payments', authenticateUser, authorizeUser(['user']), paymentCltr.pay) //Validation
 

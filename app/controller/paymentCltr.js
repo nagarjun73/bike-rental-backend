@@ -1,14 +1,17 @@
 const _ = require('lodash')
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+//importing models
 const Payment = require('../model/paymentModel')
 const Trip = require('../model/tripModel')
+
 const paymentCltr = {}
 
+//function for doing payments
 paymentCltr.pay = async (req, res) => {
   const body = _.pick(req.body, ["amount", "tripId"])
-  console.log(body)
   try {
+    //crateing session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [{
@@ -25,11 +28,14 @@ paymentCltr.pay = async (req, res) => {
       success_url: "http://localhost:3000/success",
       cancel_url: "http://localhost:3000/cancel",
     })
+
+    //creating new payment data
     const payment = new Payment(body)
     payment.userId = req.user.id
     payment.paymentType = "card"
     payment.stripTransactionId = session.id
     await payment.save()
+    //responding with url to do payment in frintend
     res.json({ id: session.id, url: session.url })
 
   } catch (e) {
@@ -37,9 +43,9 @@ paymentCltr.pay = async (req, res) => {
   }
 }
 
+//function for updating payment and booking status if payment success
 paymentCltr.update = async (req, res) => {
   const id = req.params.id
-  console.log(id)
   try {
     const updatePayment = await Payment.findOneAndUpdate({ stripTransactionId: id }, { paymentStatus: "Successful" }, { runValidators: true, new: true })
     const upDateTrip = await Trip.findByIdAndUpdate(updatePayment.tripId, { tripStatus: "Booked", paymentId: updatePayment._id })
@@ -49,6 +55,7 @@ paymentCltr.update = async (req, res) => {
   }
 }
 
+//function for deleting payment and booking if payment failed
 paymentCltr.destroy = async (req, res) => {
   const id = req.params.id
   try {
