@@ -50,4 +50,14 @@ tripCltr.detail = async (req, res) => {
   }
 }
 
+tripCltr.list = async (req, res) => {
+  const id = req.user.id
+  try {
+    const tripList = await Trip.find({ userId: id }).populate("vehicleId").sort({ _id: -1 })
+    res.json(tripList)
+  } catch (e) {
+    res.status(404).json(e)
+  }
+}
+
 module.exports = tripCltr

@@ -113,4 +113,16 @@ profileCltr.approveUnverified = async (req, res) => {
   }
 }
 
+profileCltr.profile = async (req, res) => {
+  try {
+    const user = req.user
+    const profile = await Profile.findOne({ userId: user.id }).populate({
+      path: 'city tripHistory', populate: { path: 'vehicleId hostId', select: "model registrationNumber vehicleImage name" }
+    })
+    res.json(profile)
+  } catch (e) {
+    res.status(404).json(e)
+  }
+}
+
 module.exports = profileCltr

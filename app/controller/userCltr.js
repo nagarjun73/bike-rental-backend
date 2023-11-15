@@ -177,15 +177,7 @@ userCltr.account = async (req, res) => {
   }
 }
 
-userCltr.profile = async (req, res) => {
-  try {
-    const user = req.user
-    const profile = await Profile.findOne({ userId: user.id }).populate('city')
-    res.json(profile)
-  } catch (e) {
-    res.status(404).json(e)
-  }
-}
+
 
 userCltr.list = async (req, res) => {
   try {
