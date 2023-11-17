@@ -53,8 +53,8 @@ app.post('/api/users/add-doc', authenticateUser, authorizeUser(['user']), multer
 app.post('/api/trips/book', authenticateUser, authorizeUser(['admin', 'user']), checkSchema(tripValidationSchema), tripCltr.book)
 // //get All my trips
 // app.get('/api/trips/list', authenticateUser, authorizeUser(['admin', 'user']), tripCltr.list)
-// //get trip details
-// app.get('/api/trips/:id', authenticateUser, authorizeUser(['admin', 'user']), tripCltr.detail)
+//get trip details
+app.get('/api/trips/:id', authenticateUser, authorizeUser(['admin', 'user']), tripCltr.detail)
 
 //List all city
 app.get('/api/locations/list', locationCltr.list)
@@ -86,6 +86,8 @@ app.post('/api/host/add-vehicle', authenticateUser, authorizeUser(['host']), mul
 app.put('/api/host/:id/change-status', authenticateUser, authorizeUser(['host']), vehicleCltr.changeStatus)
 //Host Profile Add
 app.post('/api/host/add-doc', authenticateUser, authorizeUser(['host']), multerObj.addDocs(), checkSchema(hostProfileValidationSchema), profileCltr.addHostProfile)
+//Vehicle Type List
+app.get('/api/vehicletype/hostlist', authenticateUser, authorizeUser(['host']), vehicletypeCltr.listhost)
 
 
 //Admin's API's

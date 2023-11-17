@@ -32,12 +32,6 @@ const registrationNumberSchema = {
   },
 }
 
-const manufacturerSchema = {
-  notEmpty: {
-    errorMessage: "Manufacturer should not Empty"
-  }
-}
-
 const vehicleImageSchema = {
   custom: {
     options: async (value, { req, res }) => {
@@ -97,7 +91,6 @@ const emissionCertificateSchema = {
 const addVehicleValidationSchema = {
   type: typeSchema,
   model: modelSchema,
-  manufacturer: manufacturerSchema,
   vehicleType: vehicleTypeSchema,
   distanceTravelled: distanceTravelledSchema,
   registrationNumber: registrationNumberSchema,

@@ -35,6 +35,17 @@ vehicletypeCltr.delete = async (req, res) => {
   }
 }
 
+
+//List for host
+vehicletypeCltr.listhost = async (req, res) => {
+  try {
+    let list = await Vehicletype.find().select("name")
+    res.json(list)
+  } catch (e) {
+    res.status(400).json(e)
+  }
+}
+
 vehicletypeCltr.list = async (req, res) => {
   try {
     const list = await Vehicletype.find()

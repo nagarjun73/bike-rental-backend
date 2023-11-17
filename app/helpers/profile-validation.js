@@ -88,10 +88,10 @@ const hostProfileValidationSchema = {
   drivingLicence: drivingLicenceSchema,
   documentId: documentIdSchema,
   city: citySchema,
-  "address.street": streetAreaSchema,
-  "address.area": streetAreaSchema,
-  "address.state": stateSchema,
-  "address.pincode": pincodeSchema
+  street: streetAreaSchema,
+  area: streetAreaSchema,
+  state: stateSchema,
+  pincode: pincodeSchema
 }
 
 module.exports = { userProfileValidationSchema, hostProfileValidationSchema }

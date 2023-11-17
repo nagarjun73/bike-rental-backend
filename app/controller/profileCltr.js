@@ -36,7 +36,7 @@ profileCltr.addUserProfile = async (req, res) => {
       profile.drivingLicence = getUrlObj('drivingLicence')
       profile.documentId = getUrlObj('documentId')
       const prfl = await profile.save()
-      res.json({ msg: "Thank you for submitting your documents! We have received them successfully. Please be patient as we verify your documents. We appreciate your cooperation and will notify you once the verification process is complete" })
+      res.json({ msg: "Thank you for submitting your documents! We have received them successfully. Please be patient as we verify your documents." })
     } else {
       res.status(400).json({ msg: "Profile already Present" })
     }
@@ -53,7 +53,15 @@ profileCltr.addHostProfile = async (req, res) => {
     return res.status(400).json({ errors: errors.array() })
   }
 
-  const body = _.pick(req.body, ["address", "city"])
+  const body = _.pick(req.body, ["city", "street", "area", "state", "pincode"])
+  const address = {
+    street: body["street"],
+    area: body["area"],
+    state: body["state"],
+    pincode: body["pincode"]
+
+  }
+  console.log(body, "Profile")
   const { drivingLicence, documentId } = req.files
   const arrDocs = [...drivingLicence, ...documentId]
   try {
@@ -77,12 +85,12 @@ profileCltr.addHostProfile = async (req, res) => {
       //Create and update profile
       const profile = new Profile()
       profile.userId = req.user.id
-      profile.address = body.address
+      profile.address = address
       profile.city = body.city
       profile.drivingLicence = getUrlObj('drivingLicence')
       profile.documentId = getUrlObj('documentId')
       await profile.save()
-      res.json(profile)
+      res.json({ msg: "Thank you for submitting your documents! We have received them successfully.Please be patient as we verify your documents." })
     } else {
       res.status(400).json({ msg: "Profile already Present" })
     }
@@ -115,11 +123,17 @@ profileCltr.approveUnverified = async (req, res) => {
 
 profileCltr.profile = async (req, res) => {
   try {
+    const role = req.user.role
     const user = req.user
-    const profile = await Profile.findOne({ userId: user.id }).populate({
-      path: 'city tripHistory', populate: { path: 'vehicleId hostId', select: "model registrationNumber vehicleImage name" }
-    })
-    res.json(profile)
+    if (role == "user") {
+      const profile = await Profile.findOne({ userId: user.id }).populate({
+        path: 'city tripHistory', populate: { path: 'vehicleId hostId', select: "model registrationNumber vehicleImage name" }
+      })
+      res.json(profile)
+    } else if (role == "host") {
+      const profile = await Profile.findOne({ userId: user.id })
+      res.json(profile)
+    }
   } catch (e) {
     res.status(404).json(e)
   }

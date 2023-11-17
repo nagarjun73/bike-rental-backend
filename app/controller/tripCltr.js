@@ -30,6 +30,7 @@ tripCltr.book = async (req, res) => {
     trip.amount = (vehicle.vehicleType.perDayCharge * days) + (vehicle.vehicleType.perHourCharge * hours)
     const booked = await trip.save()
     await Profile.findOneAndUpdate({ userId: userId }, { $push: { tripHistory: trip } })
+    await Profile.findOneAndUpdate({ _id: booked.hostId }, { $push: { hostedTrips: trip } })
     await Vehicle.findOneAndUpdate({ _id: vehicle._id }, { $push: { trips: trip } })
     res.json(booked)
   } catch (e) {
