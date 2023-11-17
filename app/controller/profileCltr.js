@@ -133,6 +133,9 @@ profileCltr.profile = async (req, res) => {
     } else if (role == "host") {
       const profile = await Profile.findOne({ userId: user.id })
       res.json(profile)
+    } else if (role == "admin") {
+      const profile = await Profile.findOne({ userId: user.id })
+      res.json(profile)
     }
   } catch (e) {
     res.status(404).json(e)

@@ -44,7 +44,7 @@ app.get('/api/users/verify/:token', userCltr.verify)
 //User Login
 app.post('/api/users/login', checkSchema(userLoginValidationSchema), userCltr.login)
 //User account
-app.get('/api/users/account', authenticateUser, userCltr.account)
+app.get('/api/users/account', authenticateUser, authorizeUser(['admin', 'user', 'host']), userCltr.account)
 //User Profile query
 app.get('/api/users/profile', authenticateUser, authorizeUser(['admin', 'user', 'host']), profileCltr.profile)
 //User Profile Add
@@ -98,7 +98,7 @@ app.get('/api/admin/:id/search-users', authenticateUser, authorizeUser(['admin']
 //List all vehicles
 app.get('/api/admin/vehicles', authenticateUser, authorizeUser(['admin']), vehicleCltr.list)
 //Get Vehicle info
-app.get('/api/admin/:id/vehicle-info', authenticateUser, authorizeUser(['admin']), vehicleCltr.info)
+app.get('/api/admin/:id/vehicle-info', authenticateUser, authorizeUser(["host", 'admin']), vehicleCltr.info)
 //Approve Host's vehicle
 app.get('/api/admin/:id/approve', authenticateUser, authorizeUser(['admin']), vehicleCltr.approve)
 

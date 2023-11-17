@@ -36,8 +36,8 @@ const vehicleImageSchema = {
   custom: {
     options: async (value, { req, res }) => {
       if (!req.files.vehicleImage) {
-        throw new Error('Please ensure that filed is not empty.')
-      } else if (req.files.vehicleImage.length > 5) {
+        throw new Error('Please ensure that file is not empty.')
+      } else if (req.files.vehicleImage.length > 3) {
         throw new Error('You can upload a maximum of three files.')
       } else {
         return true
@@ -51,7 +51,7 @@ const registrationCertificateSchema = {
     options: async (value, { req, res }) => {
       if (!req.files.registrationCertificate) {
         throw new Error('Please ensure the image is not empty.')
-      } else if (req.files.registrationCertificate.length > 2) {
+      } else if (req.files.registrationCertificate.length > 3) {
         throw new Error('You can upload a maximum of three files.')
       } else {
         return true
@@ -65,7 +65,7 @@ const insuranceCerificateSchema = {
     options: async (value, { req, res }) => {
       if (!req.files.insuranceCerificate) {
         throw new Error('Please ensure the image is not empty.')
-      } else if (req.files.insuranceCerificate.length > 2) {
+      } else if (req.files.insuranceCerificate.length > 3) {
         throw new Error('You can upload a maximum of three files.')
       } else {
         return true
@@ -79,7 +79,7 @@ const emissionCertificateSchema = {
     options: async (value, { req, res }) => {
       if (!req.files.emissionCertificate) {
         throw new Error('Please ensure the image is not empty.')
-      } else if (req.files.emissionCertificate.length > 2) {
+      } else if (req.files.emissionCertificate.length > 3) {
         throw new Error('You can upload a maximum of three files.')
       } else {
         return true
