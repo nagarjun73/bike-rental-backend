@@ -25,8 +25,8 @@ paymentCltr.pay = async (req, res) => {
         quantity: 1
       }],
       mode: "payment",
-      success_url: "http://localhost:3000/success",
-      cancel_url: "http://localhost:3000/cancel",
+      success_url: `${process.env.FRONTEND_URL}/success`,
+      cancel_url: `${process.env.FRONTEND_URL}/cancel`,
     })
 
     //creating new payment data
