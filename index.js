@@ -56,6 +56,12 @@ app.post('/api/trips/book', authenticateUser, authorizeUser(['admin', 'user']), 
 //get trip details
 app.get('/api/trips/:id', authenticateUser, authorizeUser(['admin', 'user']), tripCltr.detail)
 
+//Start Trip For user before 15min
+app.get('/api/trips/:id/start', authenticateUser, authorizeUser(['user']), tripCltr.startTrip)
+
+//End Ride
+
+
 //List all city
 app.get('/api/locations/list', locationCltr.list)
 

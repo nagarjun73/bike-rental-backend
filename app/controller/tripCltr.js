@@ -4,6 +4,7 @@ const Trip = require('../model/tripModel')
 const Profile = require('../model/profileModel')
 const Vehicle = require('../model/vehicleModel')
 const { validationResult } = require('express-validator')
+const { addMinutes } = require('date-fns')
 
 const tripCltr = {}
 
@@ -58,6 +59,17 @@ tripCltr.list = async (req, res) => {
     res.json(tripList)
   } catch (e) {
     res.status(404).json(e)
+  }
+}
+
+tripCltr.startTrip = async (req, res) => {
+  const userId = req.user.id
+  const id = req.params.id
+  try {
+    const trip = await Trip.findOneAndUpdate({ _id: id, userId: userId, tripStartDate: { $lt: addMinutes(new Date(), 15) } }, { tripStatus: "inprogress" }, { runValidators: true, new: true })
+    res.json(trip);
+  } catch (e) {
+    res.status(500).json(e)
   }
 }
 
