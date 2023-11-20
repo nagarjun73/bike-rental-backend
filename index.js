@@ -41,19 +41,17 @@ app.use(cors())
 const httpServer = createServer(app)
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://localhost:3000"
-    // origin: "https://655b02e4f3c57c4ee72f679b--capable-rugelach-aa5391.netlify.app"
+    origin: process.env.FRONTEND_URL
   }
 })
 
+//Socket connection
 io.on('connection', (socket) => {
   console.log("connected to", socket.id)
 
   //Joining room
   socket.on("join_room", (data) => {
     const { userId, tripId } = data
-
-    console.log(tripId)
 
     socket.join(tripId) //trip Id will be the room Id
 
