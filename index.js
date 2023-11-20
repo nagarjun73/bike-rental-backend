@@ -69,6 +69,11 @@ app.use(express.json())
 //cors enabled
 app.use(cors())
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://655b02e4f3c57c4ee72f679b--capable-rugelach-aa5391.netlify.app/');
+  next();
+});
+
 //configure database
 configureDB()
 
