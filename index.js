@@ -36,12 +36,11 @@ app.use(express.json())
 //cors enabled
 app.use(cors())
 
-
 //http server
 const httpServer = createServer(app)
 const io = new Server(httpServer, {
   cors: {
-    origin: "https://bike-rental-frontend-gamma.vercel.app"
+    origin: process.env.FRONTEND_URL
   }
 })
 
@@ -52,10 +51,11 @@ io.on('connection', (socket) => {
   //Joining room
   socket.on("join_room", (data) => {
     const { userId, tripId } = data
-
+    console.log(tripId)
     socket.join(tripId) //trip Id will be the room Id
 
     socket.on("position", (data) => {
+      console.log(data)
       socket.to(data.tripId).emit("user_position", { data })
     })
 
