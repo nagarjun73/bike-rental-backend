@@ -4,6 +4,10 @@ const express = require('express')
 const cors = require('cors')
 const { checkSchema } = require('express-validator')
 
+//for Socket
+const { createServer } = require('http')
+const { Server } = require('socket.io')
+
 const multerObj = require('./app/aws/multer')
 const configureDB = require('./app/config/mongodb')
 //Controllers
@@ -27,6 +31,37 @@ const { authenticateUser, authorizeUser } = require('./app/middleware/authentica
 const port = process.env.PORT
 
 const app = express()
+
+//http server
+const httpServer = createServer(app)
+const io = new Server(httpServer, {
+  cors: {
+    origin: "http://localhost:3000"
+  }
+})
+
+io.on('connection', (socket) => {
+  console.log("connected to", socket.id)
+
+  //Joining room
+  socket.on("join_room", (data) => {
+    const { userId, tripId } = data
+
+    console.log(tripId)
+
+    socket.join(tripId) //trip Id will be the room Id
+
+    socket.on("position", (data) => {
+      socket.to(data.tripId).emit("user_position", { data })
+    })
+
+    socket.on('disconnected', () => {
+      console.log("user disconnected", socket.id)
+    })
+  })
+
+})
+
 
 //converting recieved data into json
 app.use(express.json())
@@ -54,7 +89,7 @@ app.post('/api/trips/book', authenticateUser, authorizeUser(['admin', 'user']), 
 // //get All my trips
 // app.get('/api/trips/list', authenticateUser, authorizeUser(['admin', 'user']), tripCltr.list)
 //get trip details
-app.get('/api/trips/:id', authenticateUser, authorizeUser(['admin', 'user']), tripCltr.detail)
+app.get('/api/trips/:id', authenticateUser, authorizeUser(['admin', 'user', "host"]), tripCltr.detail)
 
 //Start Trip For user before 15min
 app.get('/api/trips/:id/start', authenticateUser, authorizeUser(['user']), tripCltr.startTrip)
@@ -130,6 +165,6 @@ app.get('/api/profiles/:id/approve', authenticateUser, authorizeUser(['admin']),
 //Profile unApproved List
 app.get('/api/profiles/list', authenticateUser, authorizeUser(['admin']), profileCltr.unVerifiedList)
 
-app.listen(port, () => {
+httpServer.listen(port, () => {
   console.log("server running on port", port)
 })
