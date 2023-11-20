@@ -41,7 +41,7 @@ app.use(cors())
 const httpServer = createServer(app)
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.FRONTEND_URL
+    origin: "https://bike-rental-frontend-gamma.vercel.app"
   }
 })
 
