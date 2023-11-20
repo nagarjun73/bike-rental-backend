@@ -35,17 +35,14 @@ const app = express()
 app.use(express.json())
 //cors enabled
 app.use(cors())
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://655b02e4f3c57c4ee72f679b--capable-rugelach-aa5391.netlify.app/');
-  next();
-});
+
 
 //http server
 const httpServer = createServer(app)
 const io = new Server(httpServer, {
   cors: {
     // origin: "http://localhost:3000"
-    origin: "https://655b02e4f3c57c4ee72f679b--capable-rugelach-aa5391.netlify.app/"
+    origin: "https://655b02e4f3c57c4ee72f679b--capable-rugelach-aa5391.netlify.app"
   }
 })
 
