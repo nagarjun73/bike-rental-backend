@@ -51,22 +51,19 @@ io.on('connection', (socket) => {
   //Joining room
   socket.on("join_room", (data) => {
     const { userId, tripId } = data
-    console.log(tripId)
+    console.log(tripId, "user")
     socket.join(tripId) //trip Id will be the room Id
 
     socket.on("position", (data) => {
-      console.log(data)
-      socket.to(data.tripId).emit("user_position", { data })
+      console.log(data, "host")
+      socket.to(tripId).emit("user_position", { data })
     })
 
     socket.on('disconnected', () => {
       console.log("user disconnected", socket.id)
     })
   })
-
 })
-
-
 
 
 //configure database
