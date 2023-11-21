@@ -73,4 +73,15 @@ tripCltr.startTrip = async (req, res) => {
   }
 }
 
+tripCltr.endTrip = async (req, res) => {
+  const userId = req.user.id
+  const id = req.params.id
+  try {
+    const trip = await Trip.findOneAndUpdate({ _id: id, userId: userId }, { tripStatus: "completed" }, { runValidators: true, new: true })
+    res.json(trip)
+  } catch (e) {
+    res.status(500).json(e)
+  }
+}
+
 module.exports = tripCltr

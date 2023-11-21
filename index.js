@@ -93,7 +93,7 @@ app.get('/api/trips/:id', authenticateUser, authorizeUser(['admin', 'user', "hos
 app.get('/api/trips/:id/start', authenticateUser, authorizeUser(['user']), tripCltr.startTrip)
 
 //End Ride
-
+app.get('/api/trips/:id/end', authenticateUser, authorizeUser(['user']), tripCltr.endTrip)
 
 //List all city
 app.get('/api/locations/list', locationCltr.list)
