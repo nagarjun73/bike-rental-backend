@@ -140,7 +140,8 @@ app.get('/api/admin/vehicles', authenticateUser, authorizeUser(['admin']), vehic
 app.get('/api/admin/:id/vehicle-info', authenticateUser, authorizeUser(["host", 'admin']), vehicleCltr.info)
 //Approve Host's vehicle
 app.get('/api/admin/:id/approve', authenticateUser, authorizeUser(['admin']), vehicleCltr.approve)
-
+//Reject Host's vehicle
+app.get('/api/admin/:id/reject', authenticateUser, authorizeUser(['admin']), vehicleCltr.reject)
 
 //Add City
 app.post('/api/locations/add', authenticateUser, authorizeUser(['admin']), checkSchema(locationValidationSchema), locationCltr.add)//validation 
@@ -158,10 +159,13 @@ app.put('/api/vehicletype/:id/edit', authenticateUser, authorizeUser(['admin']),
 //delete vehicletype
 app.delete('/api/vehicletype/:id/delete', authenticateUser, authorizeUser(['admin']), vehicletypeCltr.delete)
 
+
 //Profile Approve
 app.get('/api/profiles/:id/approve', authenticateUser, authorizeUser(['admin']), profileCltr.approveUnverified)
 //Profile unApproved List
 app.get('/api/profiles/list', authenticateUser, authorizeUser(['admin']), profileCltr.unVerifiedList)
+//Profile reject
+app.get('/api/profiles/:id/reject', authenticateUser, authorizeUser(['admin']), profileCltr.rejectProfile)
 
 httpServer.listen(port, () => {
   console.log("server running on port", port)

@@ -77,7 +77,7 @@ vehicleCltr.changeStatus = async (req, res) => {
 
 vehicleCltr.list = async (req, res) => {
   try {
-    const listVehicles = await Vehicle.find()
+    const listVehicles = await Vehicle.find({ vehicleApproveStatus: false }).populate('hostId', ['name', 'city'])
     res.json(listVehicles)
   } catch (e) {
     res.json(e)
@@ -97,9 +97,19 @@ vehicleCltr.info = async (req, res) => {
 vehicleCltr.approve = async (req, res) => {
   try {
     const id = req.params.id
-    const vehicle = await Vehicle.findById(id)
+    const vehicle = await Vehicle.findByIdAndUpdate(id)
     vehicle.vehicleApproveStatus = true
     await vehicle.save()
+    res.json(vehicle)
+  } catch (e) {
+    res.json(e)
+  }
+}
+
+vehicleCltr.reject = async (req, res) => {
+  try {
+    const id = req.params.id
+    const vehicle = await Vehicle.findByIdAndDelete(id)
     res.json(vehicle)
   } catch (e) {
     res.json(e)

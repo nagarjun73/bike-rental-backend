@@ -103,7 +103,7 @@ profileCltr.addHostProfile = async (req, res) => {
 
 profileCltr.unVerifiedList = async (req, res) => {
   try {
-    const list = await Profile.find({ isVerified: false })
+    const list = await Profile.find({ isVerified: false }).populate("userId")
     res.json(list)
   } catch (e) {
     res.status(400).json(e)
@@ -139,6 +139,16 @@ profileCltr.profile = async (req, res) => {
     }
   } catch (e) {
     res.status(404).json(e)
+  }
+}
+
+profileCltr.rejectProfile = async (req, res) => {
+  const id = req.params.id
+  try {
+    const deleteProf = await Profile.findByIdAndDelete(id)
+    res.json(deleteProf)
+  } catch (e) {
+    res.json(e)
   }
 }
 
