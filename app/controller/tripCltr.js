@@ -33,7 +33,11 @@ tripCltr.book = async (req, res) => {
     await Profile.findOneAndUpdate({ userId: userId }, { $push: { tripHistory: trip } })
     await Profile.findOneAndUpdate({ _id: booked.hostId }, { $push: { hostedTrips: trip } })
     await Vehicle.findOneAndUpdate({ _id: vehicle._id }, { $push: { trips: trip } })
-    res.json(booked)
+
+    const trips = await Trip.findById(booked._id).populate("vehicleId", ["model", "registrationNumber"])
+    const profile = await Profile.findOne({ userId: trip.hostId }).populate('userId', ["name"])
+    const details = _.pick(profile, ['address', "userId"])
+    res.json({ trips, details })
   } catch (e) {
     res.status(400).json(e)
   }
@@ -43,10 +47,10 @@ tripCltr.book = async (req, res) => {
 tripCltr.detail = async (req, res) => {
   const id = req.params.id
   try {
-    const trip = await Trip.findById(id).populate("vehicleId", ["model", "registrationNumber"])
-    const profile = await Profile.findOne({ userId: trip.hostId }).populate('userId', ["name"])
+    const trips = await Trip.findById(id).populate("vehicleId", ["model", "registrationNumber"])
+    const profile = await Profile.findOne({ userId: trips.hostId }).populate('userId', ["name"])
     const details = _.pick(profile, ['address', "userId"])
-    res.json({ trip, details })
+    res.json({ trips, details })
   } catch (e) {
     res.status(400).json(e)
   }
