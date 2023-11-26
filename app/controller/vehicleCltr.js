@@ -127,6 +127,7 @@ vehicleCltr.pagination = async (req, res) => {
       .sort({ $natural: sort })
       .skip(page * limit)
       .limit(limit)
+      .populate({ path: 'trips', populate: { path: "userId", select: "name" } })
     res.json(vehicleList)
   } catch (e) {
     res.json(e)
