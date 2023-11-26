@@ -116,6 +116,23 @@ vehicleCltr.reject = async (req, res) => {
   }
 }
 
+vehicleCltr.pagination = async (req, res) => {
+  try {
+    const id = req.user.id
+    const page = req.query.page
+    const sort = req.query.sort
+    const limit = 12
+    const vehicleList = await Vehicle
+      .find({ hostId: id })
+      .sort({ $natural: sort })
+      .skip(page * limit)
+      .limit(limit)
+    res.json(vehicleList)
+  } catch (e) {
+    res.json(e)
+  }
+}
+
 vehicleCltr.query = async (req, res) => {
   const body = req.body
   try {
@@ -169,5 +186,23 @@ vehicleCltr.query = async (req, res) => {
     res.status(401).json(e)
   }
 }
+
+
+vehicleCltr.search = async (req, res) => {
+  const id = req.user.id
+  const name = req.query.name
+  try {
+    const searched = await Vehicle.find({ hostId: id })
+    const searchFilter = searched.filter((ele) => {
+      return ele.model.toLocaleLowerCase().includes(name.toLocaleLowerCase())
+    })
+    res.json(searchFilter)
+  } catch (e) {
+    res.status(400).json(e)
+  }
+}
+
+
+
 
 module.exports = vehicleCltr

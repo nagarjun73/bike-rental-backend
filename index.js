@@ -84,8 +84,9 @@ app.get('/api/users/profile', authenticateUser, authorizeUser(['admin', 'user', 
 app.post('/api/users/add-doc', authenticateUser, authorizeUser(['user']), multerObj.addDocs(), checkSchema(userProfileValidationSchema), profileCltr.addUserProfile)
 //Book Trip
 app.post('/api/trips/book', authenticateUser, authorizeUser(['admin', 'user']), checkSchema(tripValidationSchema), tripCltr.book)
-// //get All my trips
-// app.get('/api/trips/list', authenticateUser, authorizeUser(['admin', 'user']), tripCltr.list)
+//get All my trips
+app.get('/api/trips/list', authenticateUser, authorizeUser(['admin', 'user']), tripCltr.list)
+
 //get trip details
 app.get('/api/trips/:id', authenticateUser, authorizeUser(['admin', 'user', "host"]), tripCltr.detail)
 
@@ -114,11 +115,16 @@ app.get('/api/payments/update/:id', authenticateUser, authorizeUser(['user']), p
 app.get('/api/payments/delete/:id', authenticateUser, authorizeUser(['user']), paymentCltr.destroy)
 
 
-
-
 //Host's API's  
 //List Vehicle
 app.get('/api/host/all-vehicles', authenticateUser, authorizeUser(['host']), vehicleCltr.getVehicles)
+
+//list vehicle
+app.get('/api/host/pagination', authenticateUser, authorizeUser(['host']), vehicleCltr.pagination)
+
+//Search Vehicle
+app.get('/api/vehicles/search', authenticateUser, authorizeUser(['host']), vehicleCltr.search)
+
 //Add vehicle
 app.post('/api/host/add-vehicle', authenticateUser, authorizeUser(['host']), multerObj.addVehicle(), checkSchema(addVehicleValidationSchema), vehicleCltr.addVehicle)
 //Change status of vehicle
@@ -145,6 +151,7 @@ app.get('/api/admin/:id/reject', authenticateUser, authorizeUser(['admin']), veh
 
 //Add City
 app.post('/api/locations/add', authenticateUser, authorizeUser(['admin']), checkSchema(locationValidationSchema), locationCltr.add)//validation 
+app.put('/api/locations/:id/edit', authenticateUser, authorizeUser(['admin']), locationCltr.edit)
 //delete City
 app.delete('/api/locations/:id/delete', authenticateUser, authorizeUser(['admin']), locationCltr.delete)//validation 
 
@@ -153,7 +160,7 @@ app.delete('/api/locations/:id/delete', authenticateUser, authorizeUser(['admin'
 //list vehicletype
 app.get('/api/vehicletype/list', authenticateUser, authorizeUser(['admin']), vehicletypeCltr.list)
 //add vehicletype
-app.post('/api/vehicletype/add', authenticateUser, authorizeUser(['admin']), vehicletypeCltr.add) //validation left
+app.post('/api/vehicletype/add', authenticateUser, authorizeUser(['admin']), vehicletypeCltr.add)
 //edit vehicletypes
 app.put('/api/vehicletype/:id/edit', authenticateUser, authorizeUser(['admin']), vehicletypeCltr.edit)
 //delete vehicletype

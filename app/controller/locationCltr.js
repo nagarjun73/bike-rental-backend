@@ -29,11 +29,22 @@ locationCltr.add = async (req, res) => {
   }
 }
 
+locationCltr.edit = async (req, res) => {
+  const id = req.params.id
+  const body = req.body
+  try {
+    const editCity = await Location.findByIdAndUpdate(id, body, { runValidators: true, new: true })
+    res.json(editCity)
+  } catch (e) {
+    res.status(400).json(e)
+  }
+}
+
 locationCltr.delete = async (req, res) => {
   const id = req.params.id
   try {
-    const deleteVehicle = await Location.findByIdAndDelete(id)
-    res.json(deleteVehicle)
+    const deleteCity = await Location.findByIdAndDelete(id)
+    res.json(deleteCity)
   } catch (e) {
     res.status(400).json(e)
   }

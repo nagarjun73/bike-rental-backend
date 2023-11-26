@@ -35,9 +35,8 @@ paymentCltr.pay = async (req, res) => {
     payment.paymentType = "card"
     payment.stripTransactionId = session.id
     await payment.save()
-    //responding with url to do payment in frintend
+    //responding with url to do payment in frontend
     res.json({ id: session.id, url: session.url })
-
   } catch (e) {
     res.status(400).json(e)
   }

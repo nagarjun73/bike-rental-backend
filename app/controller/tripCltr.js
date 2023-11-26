@@ -54,13 +54,23 @@ tripCltr.detail = async (req, res) => {
 
 tripCltr.list = async (req, res) => {
   const id = req.user.id
+  const page = req.query.page
+  const sort = req.query.sort
+  const limit = 5
   try {
-    const tripList = await Trip.find({ userId: id }).populate("vehicleId").sort({ $natural: -1 })
+    const tripList = await Trip
+      .find({ userId: id })
+      .sort({ createdAt: sort })
+      .populate("vehicleId")
+      .skip(page * limit)
+      .limit(limit)
     res.json(tripList)
   } catch (e) {
     res.status(404).json(e)
   }
 }
+
+
 
 tripCltr.startTrip = async (req, res) => {
   const userId = req.user.id
