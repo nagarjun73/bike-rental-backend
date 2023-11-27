@@ -194,7 +194,7 @@ vehicleCltr.search = async (req, res) => {
   const id = req.user.id
   const name = req.query.name
   try {
-    const searched = await Vehicle.find({ hostId: id })
+    const searched = await Vehicle.find({ hostId: id }).populate({ path: 'trips', populate: { path: "userId", select: "name" } })
     const searchFilter = searched.filter((ele) => {
       return ele.model.toLocaleLowerCase().includes(name.toLocaleLowerCase())
     })
@@ -203,8 +203,5 @@ vehicleCltr.search = async (req, res) => {
     res.status(400).json(e)
   }
 }
-
-
-
 
 module.exports = vehicleCltr

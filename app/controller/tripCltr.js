@@ -22,22 +22,26 @@ tripCltr.book = async (req, res) => {
     //Calculting trip time difference using date-fns
     const { days, hours } = intervalToDuration({ start: new Date(body.tripStartDate), end: new Date(body.tripEndDate) })
 
-    //Find charges 
-    const vehicle = await Vehicle.findById(body.vehicleId).populate(['vehicleType'])
-    console.log(vehicle)
+    if (days == 0 && hours < 3) {
+      res.status(400).json({ errors: "Trips should br minimum 3 hours long" })
+    } else {
+      //Find charges 
+      const vehicle = await Vehicle.findById(body.vehicleId).populate(['vehicleType'])
+      console.log(vehicle)
 
-    const trip = new Trip(body)
-    trip.userId = userId
-    trip.amount = (vehicle.vehicleType.perDayCharge * days) + (vehicle.vehicleType.perHourCharge * hours)
-    const booked = await trip.save()
-    await Profile.findOneAndUpdate({ userId: userId }, { $push: { tripHistory: trip } })
-    await Profile.findOneAndUpdate({ _id: booked.hostId }, { $push: { hostedTrips: trip } })
-    await Vehicle.findOneAndUpdate({ _id: vehicle._id }, { $push: { trips: trip } })
+      const trip = new Trip(body)
+      trip.userId = userId
+      trip.amount = (vehicle.vehicleType.perDayCharge * days) + (vehicle.vehicleType.perHourCharge * hours)
+      const booked = await trip.save()
+      await Profile.findOneAndUpdate({ userId: userId }, { $push: { tripHistory: trip } })
+      await Profile.findOneAndUpdate({ _id: booked.hostId }, { $push: { hostedTrips: trip } })
+      await Vehicle.findOneAndUpdate({ _id: vehicle._id }, { $push: { trips: trip } })
 
-    const trips = await Trip.findById(booked._id).populate("vehicleId", ["model", "registrationNumber"])
-    const profile = await Profile.findOne({ userId: trip.hostId }).populate('userId', ["name"])
-    const details = _.pick(profile, ['address', "userId"])
-    res.json({ trips, details })
+      const trips = await Trip.findById(booked._id).populate("vehicleId", ["model", "registrationNumber"])
+      const profile = await Profile.findOne({ userId: trip.hostId }).populate('userId', ["name"])
+      const details = _.pick(profile, ['address', "userId"])
+      res.json({ trips, details })
+    }
   } catch (e) {
     res.status(400).json(e)
   }

@@ -127,6 +127,7 @@ app.get('/api/vehicles/search', authenticateUser, authorizeUser(['host']), vehic
 
 //Add vehicle
 app.post('/api/host/add-vehicle', authenticateUser, authorizeUser(['host']), multerObj.addVehicle(), checkSchema(addVehicleValidationSchema), vehicleCltr.addVehicle)
+
 //Change status of vehicle
 app.put('/api/host/:id/change-status', authenticateUser, authorizeUser(['host']), vehicleCltr.changeStatus)
 //Host Profile Add
