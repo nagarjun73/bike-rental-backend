@@ -55,7 +55,7 @@ vehicleCltr.addVehicle = async (req, res) => {
 
 vehicleCltr.getVehicles = async (req, res) => {
   try {
-    const hostVehicles = await Vehicle.find({ hostId: req.user.id }).populate({ path: 'trips', populate: { path: "userId", select: "name" } }).sort({ $natural: -1 })
+    const hostVehicles = await Vehicle.find({ hostId: req.user.id }).populate({ path: 'trips', populate: { path: "userId", select: "name" } })
     res.json(hostVehicles)
   } catch (e) {
     res.json(e)
@@ -69,7 +69,8 @@ vehicleCltr.changeStatus = async (req, res) => {
     const foundVehicle = await Vehicle.findOne({ hostId: req.user.id, _id: vehicleId })
     foundVehicle.availability = body.availability
     await foundVehicle.save()
-    res.json(foundVehicle)
+    const vehicle = await Vehicle.findById(foundVehicle._id).populate({ path: 'trips', populate: { path: "userId", select: "name" } })
+    res.json(vehicle)
   } catch (e) {
     res.json(e)
   }
