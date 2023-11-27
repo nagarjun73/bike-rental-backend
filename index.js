@@ -172,6 +172,10 @@ app.delete('/api/vehicletype/:id/delete', authenticateUser, authorizeUser(['admi
 app.get('/api/profiles/:id/approve', authenticateUser, authorizeUser(['admin']), profileCltr.approveUnverified)
 //Profile unApproved List
 app.get('/api/profiles/list', authenticateUser, authorizeUser(['admin']), profileCltr.unVerifiedList)
+
+//Profile Search
+app.get('/api/profiles', authenticateUser, authorizeUser(['admin']), profileCltr.searchProfile)
+
 //Profile reject
 app.get('/api/profiles/:id/reject', authenticateUser, authorizeUser(['admin']), profileCltr.rejectProfile)
 

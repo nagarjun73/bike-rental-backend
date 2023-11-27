@@ -102,9 +102,29 @@ profileCltr.addHostProfile = async (req, res) => {
 
 
 profileCltr.unVerifiedList = async (req, res) => {
+  const page = req.query.page
+  const sort = req.query.sort
+  const limit = 5
+  try {
+    const list = await Profile.find({ isVerified: false })
+      .sort({ createdAt: sort })
+      .populate("userId")
+      .skip(page * limit)
+      .limit(limit)
+    res.json(list)
+  } catch (e) {
+    res.status(400).json(e)
+  }
+}
+
+profileCltr.searchProfile = async (req, res) => {
+  const name = req.query.name
   try {
     const list = await Profile.find({ isVerified: false }).populate("userId")
-    res.json(list)
+    const searched = list.filter((ele) => {
+      return ele.userId.name.includes(name)
+    })
+    res.json(searched)
   } catch (e) {
     res.status(400).json(e)
   }

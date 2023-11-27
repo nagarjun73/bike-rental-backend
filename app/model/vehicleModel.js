@@ -41,10 +41,10 @@ const vehicleSchema = new Schema({
     url: String,
     key: String
   }],
-  ratings: {
-    type: String,
-    default: 'no ratings'
-  },
+  ratings: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Review'
+  }],
   vehicleApproveStatus: {
     type: Boolean,
     default: false
