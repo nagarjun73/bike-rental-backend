@@ -1,6 +1,3 @@
-
-
-
 const citySchema = {
   notEmpty: {
     errorMessage: "City is required",

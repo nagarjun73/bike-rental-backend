@@ -18,6 +18,7 @@ const paymentCltr = require('./app/controller/paymentCltr')
 const vehicletypeCltr = require('./app/controller/vehicletypeCltr')
 const locationCltr = require('./app/controller/locationCltr')
 const profileCltr = require('./app/controller/profileCltr')
+const reviewCltr = require('../bike-rental-backend/app/controller/reviewCltr')
 
 //Validations
 const { userSignupValidationSchema, userLoginValidationSchema } = require('./app/helpers/user-validation')
@@ -25,6 +26,7 @@ const { addVehicleValidationSchema } = require('./app/helpers/vehicleValidation'
 const { tripValidationSchema } = require('./app/helpers/trip-validaton')
 const { locationValidationSchema } = require('./app/helpers/location-validation')
 const { userProfileValidationSchema, hostProfileValidationSchema } = require('./app/helpers/profile-validation')
+const { reviewValidationSchema } = require('./app/helpers/review-validation')
 
 //Auth
 const { authenticateUser, authorizeUser } = require('./app/middleware/authentication')
@@ -96,6 +98,9 @@ app.get('/api/trips/:id/start', authenticateUser, authorizeUser(['user']), tripC
 //End Ride
 app.get('/api/trips/:id/end', authenticateUser, authorizeUser(['user']), tripCltr.endTrip)
 
+//Add a review
+app.post('/api/reviews/add', authenticateUser, authorizeUser(['user']), checkSchema(reviewValidationSchema), reviewCltr.add)
+
 //List all city
 app.get('/api/locations/list', locationCltr.list)
 
@@ -127,6 +132,7 @@ app.get('/api/vehicles/search', authenticateUser, authorizeUser(['host']), vehic
 
 //Add vehicle
 app.post('/api/host/add-vehicle', authenticateUser, authorizeUser(['host']), multerObj.addVehicle(), checkSchema(addVehicleValidationSchema), vehicleCltr.addVehicle)
+
 
 //Change status of vehicle
 app.put('/api/host/:id/change-status', authenticateUser, authorizeUser(['host']), vehicleCltr.changeStatus)
