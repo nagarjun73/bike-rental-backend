@@ -89,8 +89,14 @@ app.post('/api/trips/book', authenticateUser, authorizeUser(['admin', 'user']), 
 //get All my trips
 app.get('/api/trips/list', authenticateUser, authorizeUser(['admin', 'user']), tripCltr.list)
 
-//get trip details
-app.get('/api/trips/:id', authenticateUser, authorizeUser(['admin', 'user', "host"]), tripCltr.detail)
+//get trip details while reloading
+app.get('/api/trips/detail/:id', authenticateUser, authorizeUser(['admin', 'user']), tripCltr.reloadDetail)
+
+//get trip details while booking
+app.get('/api/trips/:id', authenticateUser, authorizeUser(['admin', 'host', 'user']), tripCltr.detail)
+
+//Cancel Boking
+app.delete('/api/trips/:id', authenticateUser, authorizeUser(['admin', 'user']), tripCltr.distroy)
 
 //Start Trip For user before 15min
 app.get('/api/trips/:id/start', authenticateUser, authorizeUser(['user']), tripCltr.startTrip)

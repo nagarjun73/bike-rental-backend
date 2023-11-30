@@ -1,9 +1,7 @@
 const Review = require('../model/reviewModel')
 const Vehicle = require('../model/vehicleModel')
 const { validationResult } = require('express-validator')
-
 const _ = require('lodash')
-
 
 const reviewCltr = {}
 

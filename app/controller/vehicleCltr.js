@@ -157,7 +157,7 @@ vehicleCltr.query = async (req, res) => {
     ])
 
 
-    const vehicle = await Vehicle.populate(vehiclesByCity, [{ path: 'trips' }, { path: 'vehicleType ratings', select: "perDayCharge rating comment userId" }])
+    const vehicle = await Vehicle.populate(vehiclesByCity, [{ path: 'trips' }, { path: 'vehicleType ratings', select: "perDayCharge rating comment userId createdAt" }])
 
 
     //loops over every vehicle trips array

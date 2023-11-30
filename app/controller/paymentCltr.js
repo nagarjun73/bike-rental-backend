@@ -47,7 +47,7 @@ paymentCltr.update = async (req, res) => {
   const id = req.params.id
   try {
     const updatePayment = await Payment.findOneAndUpdate({ stripTransactionId: id }, { paymentStatus: "Successful" }, { runValidators: true, new: true })
-    const upDateTrip = await Trip.findByIdAndUpdate(updatePayment.tripId, { tripStatus: "booked", paymentId: updatePayment._id }, { runValidators: true, new: true })
+    const upDateTrip = await Trip.findByIdAndUpdate(updatePayment.tripId, { tripStatus: "booked", paymentId: updatePayment._id }, { runValidators: true, new: true }).populate('vehicleId')
     res.json(upDateTrip)
   } catch (e) {
     res.status(400).json(e)

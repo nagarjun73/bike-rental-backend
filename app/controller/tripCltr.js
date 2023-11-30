@@ -60,6 +60,16 @@ tripCltr.detail = async (req, res) => {
   }
 }
 
+tripCltr.reloadDetail = async (req, res) => {
+  const id = req.params.id
+  try {
+    const trips = await Trip.findById(id).populate("vehicleId", ["model", "registrationNumber"])
+    res.json(trips)
+  } catch (e) {
+    res.status(400).json(e)
+  }
+}
+
 tripCltr.list = async (req, res) => {
   const id = req.user.id
   const page = req.query.page
@@ -96,6 +106,16 @@ tripCltr.endTrip = async (req, res) => {
   const id = req.params.id
   try {
     const trip = await Trip.findOneAndUpdate({ _id: id, userId: userId }, { tripStatus: "completed" }, { runValidators: true, new: true })
+    res.json(trip)
+  } catch (e) {
+    res.status(500).json(e)
+  }
+}
+
+tripCltr.distroy = async (req, res) => {
+  const id = req.params.id
+  try {
+    const trip = await Trip.findOneAndDelete(id)
     res.json(trip)
   } catch (e) {
     res.status(500).json(e)
