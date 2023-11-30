@@ -18,7 +18,7 @@ const paymentCltr = require('./app/controller/paymentCltr')
 const vehicletypeCltr = require('./app/controller/vehicletypeCltr')
 const locationCltr = require('./app/controller/locationCltr')
 const profileCltr = require('./app/controller/profileCltr')
-const reviewCltr = require('../bike-rental-backend/app/controller/reviewCltr')
+const reviewCltr = require('./app/controller/reviewCltr')
 
 //Validations
 const { userSignupValidationSchema, userLoginValidationSchema } = require('./app/helpers/user-validation')
