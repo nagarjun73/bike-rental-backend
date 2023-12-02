@@ -19,6 +19,7 @@ const vehicletypeCltr = require('./app/controller/vehicletypeCltr')
 const locationCltr = require('./app/controller/locationCltr')
 const profileCltr = require('./app/controller/profileCltr')
 const reviewCltr = require('./app/controller/reviewCltr')
+const statisticsCltr = require('./app/controller/statisticsCltrt')
 
 //Validations
 const { userSignupValidationSchema, userLoginValidationSchema } = require('./app/helpers/user-validation')
@@ -190,6 +191,9 @@ app.get('/api/profiles', authenticateUser, authorizeUser(['admin']), profileCltr
 
 //Profile reject
 app.get('/api/profiles/:id/reject', authenticateUser, authorizeUser(['admin']), profileCltr.rejectProfile)
+
+//STATISTICS
+app.get('/api/admin/statistics', authenticateUser, authorizeUser(['admin']), statisticsCltr.get)
 
 httpServer.listen(port, () => {
   console.log("server running on port", port)

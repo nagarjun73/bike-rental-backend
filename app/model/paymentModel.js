@@ -9,7 +9,7 @@ const paymentSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Trip"
   },
-  amount: String,
+  amount: Number,
   paymentType: String,
   stripTransactionId: {
     type: String,

@@ -31,6 +31,7 @@ paymentCltr.pay = async (req, res) => {
 
     //creating new payment data
     const payment = new Payment(body)
+    payment.amount = Number(body.amount)
     payment.userId = req.user.id
     payment.paymentType = "card"
     payment.stripTransactionId = session.id
