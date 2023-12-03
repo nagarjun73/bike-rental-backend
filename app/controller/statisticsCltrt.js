@@ -33,12 +33,13 @@ statisticsCltr.get = async (req, res) => {
         $project: {
           //take month from createdAt
           month: { $month: "$createdAt" },
+          amount: 1
         }
       },
       {
         $group: {
           _id: "$month",
-          expenseaOfMonth: { $sum: 1 },
+          expenseaOfMonth: { $sum: { $toInt: "$amount" } },
         }
       },
       {
