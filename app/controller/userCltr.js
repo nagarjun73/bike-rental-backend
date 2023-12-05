@@ -177,6 +177,18 @@ userCltr.account = async (req, res) => {
   }
 }
 
+userCltr.editAccount = async (req, res) => {
+  try {
+    const id = req.user.id
+    const body = _.pick(req.body, ["name", "mobileNumber"])
+    const editUser = await User.findByIdAndUpdate(id, body, { runValidators: true, new: true })
+    const prof = _.pick(editUser, ['_id', 'name', "email", "mobileNumber", "role", "verified"])
+    res.json(prof)
+  } catch (e) {
+    res.status(500).json({ errors: 'something went wrong while editing user' })
+  }
+}
+
 
 
 userCltr.list = async (req, res) => {

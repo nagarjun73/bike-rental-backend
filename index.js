@@ -83,6 +83,10 @@ app.post('/api/users/login', checkSchema(userLoginValidationSchema), userCltr.lo
 app.get('/api/users/account', authenticateUser, authorizeUser(['admin', 'user', 'host']), userCltr.account)
 //User Profile query
 app.get('/api/users/profile', authenticateUser, authorizeUser(['admin', 'user', 'host']), profileCltr.profile)
+
+//Edit Name and PhoneNumber
+app.put('/api/users/edit-user', authenticateUser, authorizeUser(['admin', 'user', 'host']), userCltr.editAccount)
+
 //User Profile Add
 app.post('/api/users/add-doc', authenticateUser, authorizeUser(['user']), multerObj.addDocs(), checkSchema(userProfileValidationSchema), profileCltr.addUserProfile)
 //Book Trip
