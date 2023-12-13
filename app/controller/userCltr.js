@@ -7,7 +7,6 @@ const jwt = require('jsonwebtoken')
 const transporter = require('../config/nodemailerConfig')
 //import Models
 const User = require('../model/userModel')
-const Profile = require('../model/profileModel')
 
 const userCltr = {}
 
@@ -38,8 +37,7 @@ userCltr.register = async (req, res) => {
         //sending verification link using nodemailer 
         const sentMail = await transporter.sendMail({
           from: process.env.EMAIL,
-          // to: foundUser.email,
-          to: 'invisiblecircuit@gmail.com',
+          to: foundUser.email,
           subject: "Verify your Bike Rental Account",
           html: `<div><p>Hey Thank you for Joining Bike Rentals. Please verify your account from below Link</p><a href=${url}>Verify</a></div>`
         })
@@ -78,8 +76,7 @@ userCltr.register = async (req, res) => {
         //sending verification link using nodemailer 
         const sentMail = await transporter.sendMail({
           from: process.env.EMAIL,
-          // to: result.email,
-          to: 'invisiblecircuit@gmail.com',
+          to: result.email,
           subject: "Verify your Bike Rental Account",
           html: `<div><p>Hey Thank you for Joining Bike Rentals. Please verify your account from below Link</p><a href=${url}>Verify</a></div>`
         })
