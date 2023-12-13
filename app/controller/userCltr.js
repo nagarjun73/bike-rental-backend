@@ -153,8 +153,7 @@ userCltr.login = async (req, res) => {
         //sending verification link using nodemailer 
         const sentMail = await transporter.sendMail({
           from: process.env.EMAIL,
-          // to: result.email,
-          to: 'invisiblecircuit@gmail.com',
+          to: result.email,
           subject: "Verify your Bike Rental Account",
           html: `<div><p>Hey Thank you for Joining Bike Rentals. Please verify your account from below Link</p><a href=${url}>Verify</a></div>`
         })

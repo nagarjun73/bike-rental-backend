@@ -122,7 +122,7 @@ app.post('/api/vehicles/query', vehicleCltr.query)
 
 //PAYMENT APIS
 //Make Payment
-app.post('/api/payments', authenticateUser, authorizeUser(['user']), paymentCltr.pay) //Validation
+app.post('/api/payments', authenticateUser, authorizeUser(['user']), paymentCltr.pay)
 
 //update Payment
 app.get('/api/payments/update/:id', authenticateUser, authorizeUser(['user']), paymentCltr.update)
@@ -171,7 +171,7 @@ app.get('/api/admin/:id/reject', authenticateUser, authorizeUser(['admin']), veh
 app.post('/api/locations/add', authenticateUser, authorizeUser(['admin']), checkSchema(locationValidationSchema), locationCltr.add)//validation 
 app.put('/api/locations/:id/edit', authenticateUser, authorizeUser(['admin']), locationCltr.edit)
 //delete City
-app.delete('/api/locations/:id/delete', authenticateUser, authorizeUser(['admin']), locationCltr.delete)//validation 
+app.delete('/api/locations/:id/delete', authenticateUser, authorizeUser(['admin']), locationCltr.delete)
 
 
 //vehicletype apis
